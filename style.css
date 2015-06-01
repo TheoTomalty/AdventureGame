@@ -6,3 +6,11 @@
 	margin-left: 400px;
 	border:1px solid #000;
 }
+
+#div_box {
+	margin-left: 50px;
+	display: inline-block;
+	padding-left: 15px;
+	padding-right: 15px;
+	border:1px solid #000;
+}

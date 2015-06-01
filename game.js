@@ -1,15 +1,21 @@
 var game_started = false; //Should not change after made true
 var map;
-var actions;
+var box;
+var actions = {name:"", stores:[], enemies:[], gates:[], options:[{name:"Inventory"}]};
 var character = {x:null, y:null};
 
 // Movement Variables
-var move_speed = 50;
+var move_speed = 70;
 var move = {up:null, left:null, right:null, down:null};
 var move_direction = {up:false, left:false, right:false, down:false};
 
 function PrintMap(){
 	document.getElementById("map").innerHTML = map;
+	GenerateBox(actions);
+}
+
+function ClearActions(){
+	actions = {name:"", stores:[], enemies:[], gates:[], options:[{name:"Inventory"}]};
 }
 
 document.getElementById("map").style.letterSpacing = "10px";
@@ -64,8 +70,12 @@ document.onkeyup = function(evt) {
 }
 
 
-String.prototype.replaceAt=function(index, character) {
-	return this.substr(0, index) + character + this.substr(index+character.length);
+String.prototype.replaceAt=function(index, ch) {
+	return this.substr(0, index) + ch + this.substr(index+ch.length);
+}
+
+function ReplaceMap(position, ch){
+	map = map.replaceAt(GetElement(position.x, position.y), ch);
 }
 
 function GetElement(x, y){
@@ -90,15 +100,25 @@ function StepCharacter(direction){
 	}
 	
 	if (map.charAt(GetElement(next_character.x, next_character.y)) == "."){
-		map = map.replaceAt(GetElement(character.x, character.y), ".");
+		ReplaceMap(character, ".");
 		character = next_character;
-		map = map.replaceAt(GetElement(character.x, character.y), "@");
+		ReplaceMap(character, "@");
 		PrintMap();
+	}
+	else if (map.charAt(GetElement(next_character.x, next_character.y)) == "/"){
+		
 	}
 	
 }
 
-function GenCharacter(x1, y1){
-	map = map.replaceAt(GetElement(x1, y1), "@");
-	character = {x:x1, y:y1}
+function GenCharacter(position){
+	ReplaceMap(position, "@");
+	character = position;
+}
+
+function GenerateStore(store){
+	actions.stores.push(store);
+	for (var i = 0; i < store.entrances.length; ++i){
+		ReplaceMap(store.entrances[i], "/");
+	}
 }
