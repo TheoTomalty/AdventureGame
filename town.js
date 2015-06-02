@@ -28,9 +28,7 @@ function GenerateTown(){
 
 	
 	// Generate Armory
-	var armory = {name:"Armory", items:[], entrances:[]};
-		var entrance = {x:7, y:4};
-		armory.entrances.push(entrance);
+	var armory = {name:"Armory", items:[], entrances:[{x:7, y:4}]};
 		var dagger = {name:"Dagger", cost:1};
 		armory.items.push(dagger);
 		var bow = {name:"Simple Bow", cost:1};

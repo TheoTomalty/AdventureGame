@@ -1,7 +1,10 @@
 var game_started = false; //Should not change after made true
+
+// Temporary objects (Change depending on situation)
 var map;
 var box;
-var actions = {name:"", stores:[], enemies:[], gates:[], options:[{name:"Inventory"}]};
+var actions;
+ClearActions(); // Initialize actions
 var character = {x:null, y:null};
 
 // Movement Variables
@@ -9,17 +12,18 @@ var move_speed = 70;
 var move = {up:null, left:null, right:null, down:null};
 var move_direction = {up:false, left:false, right:false, down:false};
 
+//Reloads Screen with updated variables
 function PrintMap(){
 	document.getElementById("map").innerHTML = map;
 	GenerateBox(actions);
 }
 
+// Use when loading new environment
 function ClearActions(){
 	actions = {name:"", stores:[], enemies:[], gates:[], options:[{name:"Inventory"}]};
 }
 
-document.getElementById("map").style.letterSpacing = "10px";
-
+// Key Presses
 document.onkeydown = function(evt) {
 	evt = evt || window.event;
 	if (!game_started){
