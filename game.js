@@ -71,6 +71,9 @@ document.onkeyup = function(evt) {
 		clearInterval(move.down);
 		move_direction.down = false;
 	}
+	else if (evt.keyCode == 49){
+		box.functs[0]();
+	}
 
 }
 

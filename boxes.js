@@ -1,11 +1,14 @@
 function GenerateBox(){
 	var symbol = GetMapElement(character);
 	
+	box = {name:"", functs:[]};
+	
 	if (symbol == "."){
-		box = "You are in " + actions.name + "<br><ol>";
-		box += "<li>Inventory</li>";
-		box += "</ol>";
-		document.getElementById("box").innerHTML = box;
+		box.name = "You are in " + actions.name + "<br><ol>";
+			box.name += "<li>Inventory</li>";
+		box.functs.push(function(){ShowInventory()});
+		box.name += "</ol>";
+		document.getElementById("box").innerHTML = box.name;
 	}
 	else if (symbol == "/"){
 		
@@ -18,12 +21,16 @@ function GenerateBox(){
 			}
 		}
 		if (store){
-			box = "You are in " + store.name + "<br><ol>";
+			box.name = "You are in " + store.name + "<br><ol>";
 			for (var i = 0; i < store.items.length; ++i){
-				box += "<li>" + store.items[i].name + " (" + store.items[i].price + "g) </li>";
+				box.name += "<li>" + store.items[i].name + " (" + store.items[i].price + "g) </li>";
 			}
-			box += "</ol>";
-			document.getElementById("box").innerHTML = box;
+			box.name += "</ol>";
+			document.getElementById("box").innerHTML = box.name;
 		}
 	}
+}
+
+function ShowInventory(){
+	document.getElementById("box").innerHTML = "worked";
 }
