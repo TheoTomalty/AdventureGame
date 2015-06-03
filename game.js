@@ -49,6 +49,10 @@ document.onkeydown = function(evt) {
 		move.down = setInterval(function(){StepCharacter("down")}, move_speed);
 		move_direction.down = true;
 	}
+	else if (evt.keyCode >= 49 && evt.keyCode <= 57){
+		var i = evt.keyCode - 49;
+			box.functs(i);
+	}
 }
 
 document.onkeyup = function(evt) {
@@ -70,9 +74,6 @@ document.onkeyup = function(evt) {
 	else if (evt.keyCode == 83){
 		clearInterval(move.down);
 		move_direction.down = false;
-	}
-	else if (evt.keyCode == 49){
-		box.functs[0]();
 	}
 
 }
