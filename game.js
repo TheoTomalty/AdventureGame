@@ -14,13 +14,14 @@ var move_direction = {up:false, left:false, right:false, down:false};
 
 //Reloads Screen with updated variables
 function PrintMap(){
-	document.getElementById("map").innerHTML = map;
-	GenerateBox(actions);
+	new_map = ReplMap(character, "@")
+	document.getElementById("map").innerHTML = new_map;
+	GenerateBox();
 }
 
 // Use when loading new environment
 function ClearActions(){
-	actions = {name:"", stores:[], enemies:[], gates:[], options:[{name:"Inventory"}]};
+	actions = {name:"", stores:[], enemies:[], gates:[]};
 }
 
 // Key Presses
@@ -78,12 +79,22 @@ String.prototype.replaceAt=function(index, ch) {
 	return this.substr(0, index) + ch + this.substr(index+ch.length);
 }
 
+function ReplMap(position, ch) {
+	var new_map = map.replaceAt(GetElement(position.x, position.y), ch);
+	return new_map;
+}
+
 function ReplaceMap(position, ch){
 	map = map.replaceAt(GetElement(position.x, position.y), ch);
 }
 
 function GetElement(x, y){
-	return 4 + 27 + 27 * y + (x + 1)
+	return 4 + 27 + 27 * y + (x + 1);
+	// <tt>, top line, lines above, sideways characters
+}
+
+function GetMapElement(position){
+	return map.charAt(GetElement(position.x, position.y));
 	// <tt>, top line, lines above, sideways characters
 }
 
@@ -103,21 +114,12 @@ function StepCharacter(direction){
 		next_character.y += 1;
 	}
 	
-	if (map.charAt(GetElement(next_character.x, next_character.y)) == "."){
-		ReplaceMap(character, ".");
+	var symbol = GetMapElement(next_character); 
+	if (symbol == "." || symbol == "/" || symbol == " "){
 		character = next_character;
-		ReplaceMap(character, "@");
 		PrintMap();
 	}
-	else if (map.charAt(GetElement(next_character.x, next_character.y)) == "/"){
-		
-	}
 	
-}
-
-function GenCharacter(position){
-	ReplaceMap(position, "@");
-	character = position;
 }
 
 function GenerateStore(store){

@@ -6,37 +6,40 @@ function GenerateTown(){
 	"#.....................#<br>" + 
 	"#.#######.....#######.#<br>" +
 	"#.#Armor#.....#Gen  #.#<br>" +
-	"#.#     #.....#Store#.#<br>" +
+	"#.#-----#.....#Store#.#<br>" +
+	"#.#     #.....#-----#.#<br>" +
 	"#.#     #...../     #.#<br>" +
-	"#.#     #.....#     #.#<br>" +
-	"#.#######.....###/###.#<br>" +
-	"#.....................#<br>" +
+	"#.#######.....#     #.#<br>" +
+	"#.............###/###.#<br>" +
 	"#.....................#<br>" +
 	"#.....................+<br>" +
 	"#.#/#/#/##............+<br>" +
-	"#.#Park  #............+<br>" +
+	"#.#      #............+<br>" +
 	"#.#      /............#<br>" +
-	"#.#      #..####/####.#<br>" +
-	"#.#      /..#Weapons#.#<br>" +
-	"#.#      #..#       #.#<br>" +
+	"#.#      #..#########.#<br>" +
 	"#.#      /..#       #.#<br>" +
-	"#.########..#       #.#<br>" +
+	"#.#------#..#       #.#<br>" +
+	"#.#Park  #..#-------#.#<br>" +
+	"#.########..#Weapons#.#<br>" +
 	"#...........#########.#<br>" +
 	"#.....................#<br>" +
 	"#.....................#<br>" +
 	"#######################<br>" + "</tt>";
+	character = {x:10, y:10};
 
 	
 	// Generate Armory
-	var armory = {name:"Armory", items:[], entrances:[{x:7, y:4}]};
-		var dagger = {name:"Dagger", cost:1};
-		armory.items.push(dagger);
-		var bow = {name:"Simple Bow", cost:1};
-		armory.items.push(bow);
-		var wand = {name:"Wand", cost:1};
-		armory.items.push(wand);
+	var armory = {name:"The Armory", items:[], entrances:[{x:7, y:4}]};
+		armory.items.push({name:"Shield", price:"10"});
+		armory.items.push({name:"Cloth Armor", price:"20"});
+		armory.items.push({name:"Leather Armor", price:"30"});
 	GenerateStore(armory);
-	GenCharacter({x:10, y:10});
+	
+	var weaponsmith = {name:"The Weaponsmith", entrances:[{x:15, y:13}], items:[]};
+		weaponsmith.items.push({name:"Dagger", price:5});
+		weaponsmith.items.push({name:"Simple Bow", price:5});
+		weaponsmith.items.push({name:"Wand", price:5});
+	GenerateStore(weaponsmith);
 	
 	PrintMap();
 }
