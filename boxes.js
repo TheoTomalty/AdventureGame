@@ -1,10 +1,12 @@
+var box;
+
 function GenerateBox(){
 	var symbol = GetMapElement(character);
 	
 	if (symbol == "."){
 		box = {name:"", functs:ShowPage};
 
-		box.name = "You are in " + actions.name + "<br><ol>";
+		box.name = "You are in " + environment.name + "<br><ol>";
 		box.name += "<li>Inventory</li>";
 		box.name += "<li>Stats"
 		if (GetFreePoints()){
@@ -17,10 +19,10 @@ function GenerateBox(){
 	else if (symbol == "/"){
 		box = {name:"", store:null, functs:BuyItem};
 
-		for (var i = 0; i < actions.stores.length; ++i){
-			for (var j = 0; j < actions.stores[i].entrances.length; ++j){
-				if (actions.stores[i].entrances[j].x == character.x && actions.stores[i].entrances[j].y == character.y){
-					box.store = actions.stores[i];
+		for (var i = 0; i < environment.stores.length; ++i){
+			for (var j = 0; j < environment.stores[i].entrances.length; ++j){
+				if (environment.stores[i].entrances[j].x == character.x && environment.stores[i].entrances[j].y == character.y){
+					box.store = environment.stores[i];
 				}
 			}
 		}

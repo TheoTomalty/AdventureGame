@@ -1,6 +1,6 @@
 function GenerateTown(){
-	ClearActions();
-	actions.name = "Town";
+	ClearEnvironment();
+	environment.name = "Town";
 	map = "<tt>" +
 	"##########+++##########<br>" +
 	"#.....................#<br>" + 
