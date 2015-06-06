@@ -15,8 +15,6 @@ if (localStorage.getObj("player") === null){
 	var player = {level:3, gold:10, attack:0, defence:0, items:[]};
 	localStorage.setObj("player", player);
 }
-
-// Temporary objects (Change depending on situation)
 var environment;
 ClearEnvironment(); // Initialize environment
 
@@ -35,7 +33,6 @@ function ContainsObject(obj, list) {
 			return true;
 		}
 	}
-
 	return false;
 }
 

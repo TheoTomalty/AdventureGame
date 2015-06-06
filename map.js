@@ -2,12 +2,12 @@ var map;
 
 //Reloads Screen with updated variables
 function PrintMap(){
-	new_map = ReplMap(character, "@")
+	new_map = TempReplMap(character, "@")
 	document.getElementById("map").innerHTML = new_map;
 	GenerateBox();
 }
 
-function ReplMap(position, ch) {
+function TempReplMap(position, ch) {
 	var new_map = map.replaceAt(GetElement(position.x, position.y), ch);
 	return new_map;
 }
@@ -31,11 +31,4 @@ function GenerateStore(store){
 	for (var i = 0; i < store.entrances.length; ++i){
 		ReplaceMap(store.entrances[i], "/");
 	}
-	/*
-	for (var i = 0; i < store.items.length; ++i){
-		if (store.items[i].type == "item" && localStorage.getItem(ItemToLocal(store.items[i])) === null){
-			localStorage.setItem(ItemToLocal(store.items[i]), 0);
-		}
-	}
-	*/
 }
