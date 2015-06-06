@@ -1,10 +1,18 @@
+Storage.prototype.setObj = function(key, obj) {
+
+	var o = obj || 'Null';
+	return this.setItem(key, JSON.stringify(o))
+}
+
+Storage.prototype.getObj = function(key) {
+	return JSON.parse(this.getItem(key))
+}
+
 var game_started = false; //Should not change after made true
 localStorage.clear();
-if (localStorage.getItem("player:level") === null){
-	localStorage.setItem("player:level", 3);
-	localStorage.setItem("player:attack", 0);
-	localStorage.setItem("player:defence", 0);
-	localStorage.setItem("player:gold", 10);
+if (localStorage.getObj("player") === null){
+	var player = {level:3, gold:10, attack:0, defence:0, items:[]};
+	localStorage.setObj("player", player);
 }
 // Temporary objects (Change depending on situation)
 var map;
@@ -58,6 +66,9 @@ document.onkeydown = function(evt) {
 	else if (evt.keyCode >= 49 && evt.keyCode <= 57){
 		var i = evt.keyCode - 49;
 			box.functs(i);
+	}
+	else if (evt.keyCode == 81){
+		GenerateBox();
 	}
 }
 
@@ -137,11 +148,13 @@ function GenerateStore(store){
 	for (var i = 0; i < store.entrances.length; ++i){
 		ReplaceMap(store.entrances[i], "/");
 	}
+	/*
 	for (var i = 0; i < store.items.length; ++i){
 		if (store.items[i].type == "item" && localStorage.getItem(ItemToLocal(store.items[i])) === null){
 			localStorage.setItem(ItemToLocal(store.items[i]), 0);
 		}
 	}
+	*/
 }
 
 function ItemToLocal(item){
@@ -151,6 +164,16 @@ function ItemToLocal(item){
 function LocalStringElement(local_string, i){
 	var list = local_string.split(":");
 	return list[i];
+}
+
+function ContainsObject(obj, list) {
+	for (var i = 0; i < list.length; i++) {
+		if (list[i].name === obj.name) {
+			return true;
+		}
+	}
+
+	return false;
 }
 
 function NullFunction(){}
