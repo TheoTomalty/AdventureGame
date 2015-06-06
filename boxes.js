@@ -61,10 +61,16 @@ function ShowPage(i){
 }
 
 function BuyItem(i){
+	var item = box.store.items[i];
 	var after_gold = localStorage.getItem("player:gold") - box.store.items[i].price;
 	if (after_gold >= 0){
-		localStorage.setItem("player:gold", after_gold);
-		localStorage.setItem(ItemToLocal(box.store.items[i]), 1);
+		if (item.type == "item"){
+			localStorage.setItem("player:gold", after_gold);
+			localStorage.setItem(ItemToLocal(item), 1);
+		}
+		else if (item.type == "instant"){
+			localStorage.setItem("player:gold", after_gold);
+		}
 	}
 	GenerateBox();
 }
