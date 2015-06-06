@@ -1,8 +1,15 @@
 var map;
 
-//Reloads Screen with updated variables
+// Reloads Screen with updated variables
 function PrintMap(){
-	new_map = TempReplMap(character, "@")
+	new_map = map;
+	
+	// Show character on screen?
+	if (ElementAtPlace(character, [".", "/", " "])){
+		new_map = TempReplMap(character, "@");
+	}
+	
+	// Print Screen
 	document.getElementById("map").innerHTML = new_map;
 	GenerateBox();
 }
@@ -24,11 +31,4 @@ function GetElement(x, y){
 function GetMapElement(position){
 	return map.charAt(GetElement(position.x, position.y));
 	// <tt>, top line, lines above, sideways characters
-}
-
-function GenerateStore(store){
-	environment.stores.push(store);
-	for (var i = 0; i < store.entrances.length; ++i){
-		ReplaceMap(store.entrances[i], "/");
-	}
 }

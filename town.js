@@ -2,7 +2,7 @@ function GenerateTown(){
 	ClearEnvironment();
 	environment.name = "Town";
 	map = "<tt>" +
-	"##########+++##########<br>" +
+	"#######################<br>" +
 	"#.....................#<br>" + 
 	"#.#######.....#######.#<br>" +
 	"#.#Armor#.....#Gen  #.#<br>" +
@@ -12,15 +12,15 @@ function GenerateTown(){
 	"#.#     #.....#     #.#<br>" +
 	"#.#     #.....#######.#<br>" +
 	"#.#######.............#<br>" +
-	"#.....................+<br>" +
-	"#.....................+<br>" +
-	"#.....................+<br>" +
+	"#.....................#<br>" +
+	"#.....................#<br>" +
+	"#.....................#<br>" +
 	"#.....................#<br>" +
 	"#...........#########.#<br>" +
 	"#...........#       #.#<br>" +
-	"#.------....#       #.#<br>" +
-	"#.|Park|....#-------#.#<br>" +
-	"#.------....#Weapons#.#<br>" +
+	"#...........#       #.#<br>" +
+	"#...........#-------#.#<br>" +
+	"#...........#Weapons#.#<br>" +
 	"#...........#########.#<br>" +
 	"#.....................#<br>" +
 	"#.....................#<br>" +
@@ -45,6 +45,12 @@ function GenerateTown(){
 		general.items.push({name:"Steak", price:2, type:"instant", use:"consumable"});
 		general.items.push({name:"Health Potion", price:5, type:"item", use:"consumable"});
 	GenerateStore(general);
+	
+	var old_man = {name:"Old Man", type:"questgiver", quests:[], position:{x:3, y:12}};
+		var quest1 = {name:"Into the Woods", description:""};
+		quest1.description = "Hello Traveller, darkness encrouches on our town and the beast of the night run wild. If you dare, venture into the woods and slay 3 of these foul predators.";
+		old_man.quests.push(quest1);
+	GenerateNPC(old_man);
 	
 	PrintMap();
 }

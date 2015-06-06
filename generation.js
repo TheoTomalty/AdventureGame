@@ -4,3 +4,10 @@ function GenerateStore(store){
 		ReplaceMap(store.entrances[i], "/");
 	}
 }
+
+function GenerateNPC(npc){
+	environment.NPCs.push(npc);
+	if (npc.type == "questgiver"){
+		ReplaceMap(npc.position, "Q");
+	}
+}

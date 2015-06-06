@@ -78,10 +78,20 @@ function StepCharacter(direction){
 		next_character.y += 1;
 	}
 
+	// Hinder movement if necessary
 	var symbol = GetMapElement(next_character); 
-	if (symbol == "." || symbol == "/" || symbol == " "){
+	if (!ElementAtPlace(next_character, ["#", "-", "|"])){
 		character = next_character;
 		PrintMap();
 	}
 
+}
+
+function ElementAtPlace(position, array){
+	for (var i = 0; i < array.length; ++i){
+		if (GetMapElement(position) == array[i]){
+			return true;
+		}
+	}
+	return false;
 }

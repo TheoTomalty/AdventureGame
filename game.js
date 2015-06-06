@@ -12,7 +12,7 @@ Storage.prototype.getObj = function(key) {
 var game_started = false; // Should not change after made true
 localStorage.clear();
 if (localStorage.getObj("player") === null){
-	var player = {level:3, gold:10, attack:0, defence:0, items:[]};
+	var player = {level:3, gold:10, attack:0, defence:0, items:[], quests:[]};
 	localStorage.setObj("player", player);
 }
 var environment;
@@ -20,7 +20,7 @@ ClearEnvironment(); // Initialize environment
 
 // Use when loading new environment
 function ClearEnvironment(){
-	environment = {name:"", stores:[], enemies:[], gates:[]};
+	environment = {name:"", stores:[], NPCs:[], gates:[]};
 }
 
 String.prototype.replaceAt=function(index, ch) {
