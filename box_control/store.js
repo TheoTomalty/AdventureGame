@@ -4,14 +4,7 @@ function ShowStore(){
 	InitializeBox("You are in " + box.store.name);
 
 	for (var i = 0; i < box.store.items.length; ++i){
-		box.name += "<li";
-		if (ContainsObject(box.store.items[i], player.items)){
-			box.name += " style=\"color:blue;\"";
-		}
-		else if (box.store.items[i].price > player.gold){
-			box.name += " style=\"color:grey;\"";
-		}
-		box.name += ">" + box.store.items[i].name + " (" + box.store.items[i].price + "g) </li>";
+		NewListElement(box.store.items[i].name + " (" + box.store.items[i].price + "g)", ContainsObject(box.store.items[i], player.items), 					box.store.items[i].price > player.gold);
 	}
 	PrintBox();
 }

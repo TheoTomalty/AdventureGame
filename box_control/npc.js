@@ -7,7 +7,7 @@ function ShowNPC(){
 		box.functs = EngageQuestgiver;
 	}
 
-	box.name += "<li>" + engage + "</li>";
+	NewListElement(engage);
 	PrintBox();
 }
 
@@ -19,11 +19,7 @@ function EngageQuestgiver(num){
 		box.functs = ViewQuest;
 
 		for (var i = 0; i < box.npc.quests.length; ++i){
-			box.name += "<li"
-			if (ContainsObject(box.npc.quests[i], player.quests)){
-				box.name += " style=\"color:grey;\"";
-			}
-			box.name += ">" + box.npc.quests[i].name + "</li>";
+			NewListElement(box.npc.quests[i].name, ContainsObject(box.npc.quests[i], player.quests), false);
 		}
 		
 		PrintBox();
@@ -36,8 +32,8 @@ function ViewQuest(num){
 		InitializeBox(box.npc.quests[num].description);
 		box.functs = AcceptQuest;
 
-		box.name += "<li>Accept</li>";
-		box.name += "<li>Decline</li>";
+		NewListElement("Accept");
+		NewListElement("Decline");
 
 		PrintBox();
 	}

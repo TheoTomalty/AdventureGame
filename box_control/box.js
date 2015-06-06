@@ -4,6 +4,20 @@ function InitializeBox(title){
 	box.name = title + "<br><ol>";
 }
 
+function NewListElement(title, is_blue, is_grey){
+	is_grey = is_grey || false;
+	is_blue = is_blue || false;
+	
+	box.name += "<li";
+	if (is_blue){
+		box.name += " style=\"color:blue;\"";
+	}
+	else if (is_grey){
+		box.name += " style=\"color:grey;\"";
+	}
+	box.name += ">" + title + "</li>";
+}
+
 function PrintBox(){
 	box.name += "</ol>";
 	document.getElementById("box").innerHTML = box.name;
@@ -16,7 +30,7 @@ function GenerateBox(){
 		box = {name:"", functs:BrowsePlayer};
 
 		InitializeBox("You are in " + environment.name);
-		box.name += "<li>Inventory</li>";
+		NewListElement("Inventory");
 		box.name += "<li>Stats"
 		if (GetFreePoints()){
 			box.name += " (" + GetFreePoints() + ")";
@@ -63,7 +77,7 @@ function BrowsePlayer(num){
 	if (num == 0){
 		box = {name:"", functs:NullFunction};
 		InitializeBox("Your Inventory");
-		box.name += "<li>Gold: " + player.gold + "</li>";
+		NewListElement("Gold: " + player.gold);
 		for(var i = 0; i < player.items.length; ++i){
 			box.name += "<li>" + player.items[i].name + "</li>";
 		}
@@ -72,8 +86,8 @@ function BrowsePlayer(num){
 	else if (num == 1){
 		box = {name:"", functs:LevelStat};
 		InitializeBox("You are level " + player.level + "<br>" + "Attack: " + player.attack + " Defence: "  + player.defence);
-		box.name += "<li>Level Attack</li>";
-		box.name += "<li>Level Defence</li>";
+		NewListElement("Level Attack");
+		NewListElement("Level Defence");
 		PrintBox();
 	}
 }
