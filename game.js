@@ -2,6 +2,8 @@ var game_started = false; //Should not change after made true
 localStorage.clear();
 if (localStorage.getItem("player:level") === null){
 	localStorage.setItem("player:level", 3);
+	localStorage.setItem("player:attack", 0);
+	localStorage.setItem("player:defence", 0);
 	localStorage.setItem("player:gold", 10);
 }
 // Temporary objects (Change depending on situation)

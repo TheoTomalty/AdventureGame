@@ -6,6 +6,11 @@ function GenerateBox(){
 
 		box.name = "You are in " + actions.name + "<br><ol>";
 		box.name += "<li>Inventory</li>";
+		box.name += "<li>Stats"
+		if (GetFreePoints()){
+			box.name += " (" + GetFreePoints() + ")";
+		}
+		box.name += "</li>";
 		box.name += "</ol>";
 		document.getElementById("box").innerHTML = box.name;
 	}
@@ -48,22 +53,32 @@ function ShowStoreBox(){
 }
 
 function ShowPage(i){
-	box = {name:"", functs:NullFunction};
-	box.name = "Your Inventory<br><ol>";
-	box.name += "<li>Gold: " + localStorage.getItem("player:gold") + "</li>";
-	for(var i in window.localStorage){
-		if (LocalStringElement(i, 0) == "item" && localStorage.getItem(i) == 1){
-			box.name += "<li>" + LocalStringElement(i, 2) + "</li>";
+	if (i == 0){
+		box = {name:"", functs:NullFunction};
+		box.name = "Your Inventory<br><ol>";
+		box.name += "<li>Gold: " + localStorage.getItem("player:gold") + "</li>";
+		for(var i in window.localStorage){
+			if (LocalStringElement(i, 0) == "item" && localStorage.getItem(i) == 1){
+				box.name += "<li>" + LocalStringElement(i, 2) + "</li>";
+			}
 		}
+		box.name += "</ol>";
+		document.getElementById("box").innerHTML = box.name;
 	}
-	box.name += "</ol>";
-	document.getElementById("box").innerHTML = box.name;
+	else if (i == 1){
+		box = {name:"", functs:NullFunction};
+		box.name = "You are level " + localStorage.getItem("player:level") + "<br>";
+		box.name += "Attack: " + localStorage.getItem("player:attack") + " Defence: "  + localStorage.getItem("player:defence") + "<br><ol>";
+		box.name += "<li>Level Attack</li>";
+		box.name += "<li>Level Defence</li></ol>";
+		document.getElementById("box").innerHTML = box.name;
+	}
 }
 
 function BuyItem(i){
 	var item = box.store.items[i];
 	var after_gold = localStorage.getItem("player:gold") - box.store.items[i].price;
-	if (after_gold >= 0){
+	if (after_gold >= 0 && !(item.type == "item" && localStorage.getItem(ItemToLocal(item)) == 1)){
 		if (item.type == "item"){
 			localStorage.setItem("player:gold", after_gold);
 			localStorage.setItem(ItemToLocal(item), 1);
@@ -73,4 +88,8 @@ function BuyItem(i){
 		}
 	}
 	GenerateBox();
+}
+
+function GetFreePoints(){
+	return localStorage.getItem("player:level") - localStorage.getItem("player:attack") - localStorage.getItem("player:defence");
 }
