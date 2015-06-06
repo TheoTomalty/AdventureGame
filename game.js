@@ -1,5 +1,9 @@
 var game_started = false; //Should not change after made true
-
+localStorage.clear();
+if (localStorage.getItem("level") === null){
+	localStorage.setItem("player:level", 3);
+	localStorage.setItem("player:gold", 10);
+}
 // Temporary objects (Change depending on situation)
 var map;
 var box;
@@ -131,4 +135,20 @@ function GenerateStore(store){
 	for (var i = 0; i < store.entrances.length; ++i){
 		ReplaceMap(store.entrances[i], "/");
 	}
+	for (var i = 0; i < store.items.length; ++i){
+		if (localStorage.getItem(ItemToLocal(store.items[i])) === null){
+			localStorage.setItem(ItemToLocal(store.items[i]), 0);
+		}
+	}
 }
+
+function ItemToLocal(item){
+	return item.type + ":" + item.kind + ":" + item.name;
+}
+
+function LocalStringElement(local_string, i){
+	var list = local_string.split(":");
+	return list[i];
+}
+
+function NullFunction(){}
