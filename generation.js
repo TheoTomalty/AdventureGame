@@ -10,4 +10,7 @@ function GenerateNPC(npc){
 	if (npc.type == "questgiver"){
 		ReplaceMap(npc.position, "Q");
 	}
+	else if (npc.type == "enemy"){
+		ReplaceMap(npc.position, "E");
+	}
 }

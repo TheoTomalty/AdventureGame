@@ -6,7 +6,12 @@ function ShowNPC(){
 		engage = "Help";
 		box.functs = EngageQuestgiver;
 	}
-
+	
+	if (box.npc.type == "enemy"){
+		engage = "Fight (level " + box.npc.level + ")";
+		box.functs = FightEnemy;
+	}
+	
 	NewListElement(engage);
 	PrintBox();
 }

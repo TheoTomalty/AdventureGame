@@ -10,9 +10,10 @@ Storage.prototype.getObj = function(key) {
 
 // Setting up game
 var game_started = false; // Should not change after made true
+var can_move = true;
 localStorage.clear();
 if (localStorage.getObj("player") === null){
-	var player = {level:3, gold:10, attack:0, defence:0, items:[], quests:[]};
+	var player = {health:200, level:3, strength:0, speed:0, gold:10, items:[], weapon:null, armour:null, quests:[]};
 	localStorage.setObj("player", player);
 }
 var environment;

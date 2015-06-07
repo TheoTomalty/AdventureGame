@@ -57,7 +57,7 @@ function GenerateBox(){
 			ShowStore();
 		}	
 	}
-	else if (symbol == "Q"){ // Going over an NPC
+	else if (ElementAtPlace(character, ["Q", "E"])){ // Going over an NPC
 		box = {name:"", npc:null, functs:NullFunction};
 		
 		for (var i = 0; i < environment.NPCs.length; ++i){
@@ -85,9 +85,9 @@ function BrowsePlayer(num){
 	}
 	else if (num == 1){
 		box = {name:"", functs:LevelStat};
-		InitializeBox("You are level " + player.level + "<br>" + "Attack: " + player.attack + " Defence: "  + player.defence);
-		NewListElement("Level Attack");
-		NewListElement("Level Defence");
+		InitializeBox("You are level " + player.level + "<br>" + "Strength: " + player.strength + " Speed: "  + player.speed);
+		NewListElement("Level Strength");
+		NewListElement("Level Speed");
 		PrintBox();
 	}
 }
@@ -95,10 +95,10 @@ function BrowsePlayer(num){
 function LevelStat(num){
 	var player = localStorage.getObj("player");
 	if (num == 0 && GetFreePoints()){
-		player.attack += 1;
+		player.strength += 1;
 	}
 	else if (num == 1 && GetFreePoints()){
-		player.defence += 1;
+		player.speed += 1;
 	}
 	localStorage.setObj("player", player);
 	BrowsePlayer(1);
@@ -106,5 +106,5 @@ function LevelStat(num){
 
 function GetFreePoints(){
 	var player = localStorage.getObj("player"); 
-	return player.level - player.attack - player.defence;
+	return player.level - player.strength - player.speed;
 }

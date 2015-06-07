@@ -22,3 +22,8 @@
 #box {
 	width: 200px;
 }
+
+#profile {
+	float:left;
+	padding-bottom: 15px;
+}

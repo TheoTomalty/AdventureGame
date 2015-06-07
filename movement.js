@@ -1,4 +1,4 @@
-var move_speed = 70;
+var move_speed = 140;
 var character = {x:null, y:null};
 
 // Movement Variables
@@ -14,28 +14,34 @@ document.onkeydown = function(evt) {
 	}
 
 	//Move Character
-	if (evt.keyCode == 87 && !move_direction.up){
-		move.up = setInterval(function(){StepCharacter("up")}, move_speed);
-		move_direction.up = true;
+	if (can_move){
+		if (evt.keyCode == 87 && !move_direction.up){
+			StepCharacter("up");
+			move.up = setInterval(function(){StepCharacter("up")}, move_speed);
+			move_direction.up = true;
+		}
+		else if (evt.keyCode == 65 && !move_direction.left){
+			StepCharacter("left");
+			move.left = setInterval(function(){StepCharacter("left")}, move_speed);
+			move_direction.left = true;
+		}
+		else if (evt.keyCode == 68 && !move_direction.right){
+			StepCharacter("right");
+			move.right = setInterval(function(){StepCharacter("right")}, move_speed);
+			move_direction.right = true;
+		}
+		else if (evt.keyCode == 83 && !move_direction.down){
+			StepCharacter("down");
+			move.down = setInterval(function(){StepCharacter("down")}, move_speed);
+			move_direction.down = true;
+		}
+		else if (evt.keyCode == 81){
+			GenerateBox();
+		}
 	}
-	else if (evt.keyCode == 65 && !move_direction.left){
-		move.left = setInterval(function(){StepCharacter("left")}, move_speed);
-		move_direction.left = true;
-	}
-	else if (evt.keyCode == 68 && !move_direction.right){
-		move.right = setInterval(function(){StepCharacter("right")}, move_speed);
-		move_direction.right = true;
-	}
-	else if (evt.keyCode == 83 && !move_direction.down){
-		move.down = setInterval(function(){StepCharacter("down")}, move_speed);
-		move_direction.down = true;
-	}
-	else if (evt.keyCode >= 49 && evt.keyCode <= 57){
+	if (evt.keyCode >= 49 && evt.keyCode <= 57){
 		var i = evt.keyCode - 49;
-			box.functs(i);
-	}
-	else if (evt.keyCode == 81){
-		GenerateBox();
+		box.functs(i);
 	}
 }
 
