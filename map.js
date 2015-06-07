@@ -2,13 +2,8 @@ var map;
 
 // Reloads Screen with updated variables
 function PrintMap(){
-	new_map = map;
-	
-	// Show character on screen?
-	if (ElementAtPlace(character, [".", "/", " "])){
-		new_map = TempReplMap(character, "@");
-	}
-	
+	new_map = TempReplMap(character, "@");
+
 	// Print Screen
 	document.getElementById("map").innerHTML = new_map;
 	GenerateBox();

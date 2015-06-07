@@ -1,5 +1,10 @@
 function ShowNPC(){
-	InitializeBox(box.npc.name);
+	if (box.npc.type == "enemy"){
+		InitializeBox(box.npc.name + " (level " + box.npc.level + ")");
+	}
+	else {
+		InitializeBox(box.npc.name);
+	}
 	var engage;
 
 	if (box.npc.type == "questgiver"){
@@ -8,7 +13,7 @@ function ShowNPC(){
 	}
 	
 	if (box.npc.type == "enemy"){
-		engage = "Fight (level " + box.npc.level + ")";
+		engage = "Fight";
 		box.functs = FightEnemy;
 	}
 	

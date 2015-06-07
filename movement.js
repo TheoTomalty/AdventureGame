@@ -1,5 +1,6 @@
-var move_speed = 140;
+var move_speed = 100;
 var character = {x:null, y:null};
+var interact_place = {x:null, y:null};
 
 // Movement Variables
 var move = {up:null, left:null, right:null, down:null};
@@ -36,6 +37,8 @@ document.onkeydown = function(evt) {
 			move_direction.down = true;
 		}
 		else if (evt.keyCode == 81){
+			previous_symbol = "";
+			interact_place = character;
 			GenerateBox();
 		}
 	}
@@ -86,8 +89,13 @@ function StepCharacter(direction){
 
 	// Hinder movement if necessary
 	var symbol = GetMapElement(next_character); 
-	if (!ElementAtPlace(next_character, ["#", "-", "|"])){
+	if (ElementAtPlace(next_character, [".", "/", " "])){
 		character = next_character;
+		interact_place = character;
+		PrintMap();
+	}
+	else if (!ElementAtPlace(next_character, ["#"])){
+		interact_place = next_character;
 		PrintMap();
 	}
 

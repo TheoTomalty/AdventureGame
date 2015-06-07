@@ -4,14 +4,14 @@ function GenerateTown(){
 	map = "<tt>" +
 	"#######################<br>" +
 	"#.....................#<br>" + 
-	"#.#######.....#######.#<br>" +
-	"#.#Armor#.....#Gen  #.#<br>" +
-	"#.#-----#.....#Store#.#<br>" +
-	"#.#     #.....#-----#.#<br>" +
-	"#.#     #.....#     #.#<br>" +
-	"#.#     #.....#     #.#<br>" +
-	"#.#     #.....#######.#<br>" +
-	"#.#######.............#<br>" +
+	"#.########....#######.#<br>" +
+	"#.#Armour#....#Gen  #.#<br>" +
+	"#.#------#....#Store#.#<br>" +
+	"#.#      #....#-----#.#<br>" +
+	"#.#      #....#     #.#<br>" +
+	"#.#      #....#     #.#<br>" +
+	"#.#      #....#######.#<br>" +
+	"#.########............#<br>" +
 	"#.....................#<br>" +
 	"#.....................#<br>" +
 	"#.....................#<br>" +
@@ -25,14 +25,14 @@ function GenerateTown(){
 	"#.....................#<br>" +
 	"#.....................#<br>" +
 	"#######################<br>" + "</tt>";
-	character = {x:10, y:10};
+	GenerateCharacter({x:10, y:10});
 
 	// Generate Armory
-	var armory = {name:"The Armory", items:[], entrances:[{x:7, y:4}, {x:4, y:8}]};
-		armory.items.push({name:"Shield", resistance:2, price:10, type:"item", use:"off_hand"});
-		armory.items.push({name:"Cloth Armor", resistance:2, price:20, type:"item", use:"armor"});
-		armory.items.push({name:"Leather Armor", resistance:4, price:30, type:"item", use:"armor"});
-	GenerateStore(armory);
+	var armoury = {name:"The Armory", items:[], entrances:[{x:8, y:4}, {x:4, y:8}]};
+		armoury.items.push({name:"Shield", resistance:2, price:10, type:"item", use:"armour"});
+		armoury.items.push({name:"Cloth Armor", resistance:2, price:20, type:"item", use:"armour"});
+		armoury.items.push({name:"Leather Armor", resistance:4, price:30, type:"item", use:"armour"});
+	GenerateStore(armoury);
 	
 	var weaponsmith = {name:"The Weapon Store", entrances:[{x:15, y:13}], items:[]};
 		weaponsmith.items.push({name:"Dagger", damage:25, price:5, type:"item", use:"weapon"});
@@ -41,8 +41,8 @@ function GenerateTown(){
 	GenerateStore(weaponsmith);
 	
 	var general = {name:"The General Store", entrances:[{x:13, y:5}, {x:16, y:7}], items:[]};
-		general.items.push({name:"Ham", price:1, type:"instant", use:"consumable"});
-		general.items.push({name:"Steak", price:2, type:"instant", use:"consumable"});
+		general.items.push({name:"Ham", price:1, type:"instant", use:"heal"});
+		general.items.push({name:"Steak", price:2, type:"instant", use:"heal"});
 		general.items.push({name:"Health Potion", restoration:50, price:5, type:"item", use:"consumable"});
 	GenerateStore(general);
 	

@@ -1,4 +1,5 @@
 var box;
+var previous_symbol = "";
 
 function InitializeBox(title){
 	box.name = title + "<br><ol>";
@@ -24,26 +25,17 @@ function PrintBox(){
 }
 
 function GenerateBox(){
-	var symbol = GetMapElement(character);
+	var symbol = GetMapElement(interact_place);
 	
-	if (symbol == "."){ // Moving around
-		box = {name:"", functs:BrowsePlayer};
-
-		InitializeBox("You are in " + environment.name);
-		NewListElement("Inventory");
-		box.name += "<li>Stats"
-		if (GetFreePoints()){
-			box.name += " (" + GetFreePoints() + ")";
-		}
-		box.name += "</li>";
-		PrintBox();
+	if (previous_symbol != "." && symbol == "."){ // Moving around
+		PLayerBox();
 	}
 	else if (symbol == "/"){ // Entering a store
 		box = {name:"", store:null, functs:BuyItem};
 
 		for (var i = 0; i < environment.stores.length; ++i){
 			for (var j = 0; j < environment.stores[i].entrances.length; ++j){
-				if (environment.stores[i].entrances[j].x == character.x && environment.stores[i].entrances[j].y == character.y){
+				if (environment.stores[i].entrances[j].x == interact_place.x && environment.stores[i].entrances[j].y == interact_place.y){
 					box.store = environment.stores[i];
 				}
 			}
@@ -57,11 +49,11 @@ function GenerateBox(){
 			ShowStore();
 		}	
 	}
-	else if (ElementAtPlace(character, ["Q", "E"])){ // Going over an NPC
+	else if (ElementAtPlace(interact_place, ["Q", "E"])){ // Going over an NPC
 		box = {name:"", npc:null, functs:NullFunction};
 		
 		for (var i = 0; i < environment.NPCs.length; ++i){
-			if (environment.NPCs[i].position.x == character.x && environment.NPCs[i].position.y == character.y){
+			if (environment.NPCs[i].position.x == interact_place.x && environment.NPCs[i].position.y == interact_place.y){
 				box.npc = environment.NPCs[i];
 			}
 		}
@@ -69,6 +61,8 @@ function GenerateBox(){
 			ShowNPC();
 		}
 	}
+	
+	previous_symbol = symbol;
 }
 
 function BrowsePlayer(num){
