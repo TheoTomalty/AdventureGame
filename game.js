@@ -8,6 +8,14 @@ Storage.prototype.getObj = function(key) {
 	return JSON.parse(this.getItem(key))
 }
 
+function partial(func /*, 0..n args */) {
+  var args = Array.prototype.slice.call(arguments, 1);
+  return function() {
+	var allArguments = args.concat(Array.prototype.slice.call(arguments));
+	return func.apply(this, allArguments);
+  };
+}
+
 // Setting up game
 var game_started = false; // Should not change after made true
 var can_move = true;
@@ -16,8 +24,8 @@ if (localStorage.getObj("player") === null){
 	var player = {health:200, level:3, strength:0, speed:0, gold:10, items:[], weapon:null, armour:null, quests:[]};
 	localStorage.setObj("player", player);
 }
-var default_weapon = {name:"Fists", damage:10};
-var default_armour = {name:"Cloth", resistance:1};
+var default_weapon = {name:"Fists", use:"weapon", damage:10};
+var default_armour = {name:"Cloth", use:"armour", resistance:1};
 var environment;
 ClearEnvironment(); // Initialize environment
 

@@ -1,28 +1,13 @@
 function ShowStore(){
-	var player = localStorage.getObj("player");
+	if (box.current_interaction.type == "store"){
+		var player = localStorage.getObj("player");
+		var store = box.current_interaction;
 
-	InitializeBox("You are in " + box.store.name);
+		InitializeTitle("You are in " + store.name + " (" + player.gold + "g)");
 
-	for (var i = 0; i < box.store.items.length; ++i){
-		NewListElement(box.store.items[i].name + " (" + box.store.items[i].price + "g)", ContainsObject(box.store.items[i], player.items), 					box.store.items[i].price > player.gold);
-	}
-	PrintBox();
-}
-
-function BuyItem(i){
-	var player = localStorage.getObj("player"); 
-	var item = box.store.items[i];
-	var after_gold = player.gold - box.store.items[i].price;
-
-	if (after_gold >= 0 && !(item.type == "item" && ContainsObject(item, player.items))){
-		if (item.type == "item"){
-			player.gold = after_gold;
-			player.items.push(item);
+		for (var i = 0; i < box.current_interaction.items.length; ++i){
+			NewListElement(store.items[i].name + " (" + store.items[i].price + "g)", partial(ViewItem, store.items[i]), ContainsObject(store.items[i], player.items), store.items[i].price > player.gold); // Pass Argument
 		}
-		else if (item.type == "instant"){
-			player.gold = after_gold;
-		}
+		PrintBox();
 	}
-	localStorage.setObj("player", player);
-	GenerateBox();
 }

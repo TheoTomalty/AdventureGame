@@ -1,164 +1,82 @@
 function PLayerBox(){
-	box = {name:"", functs:BrowsePlayer};
 	var player = localStorage.getObj("player"); 
 	
-	InitializeBox("You are in " + environment.name + " (" + player.health + ")");
-	NewListElement("Inventory");
-	box.name += "<li>Stats"
+	InitializeTitle("You are in " + environment.name + " (" + player.health + ")");
+	NewListElement("Inventory", ShowInventory);
 	if (GetFreePoints()){
-		box.name += " (" + GetFreePoints() + ")";
+		NewListElement("Stats (" + GetFreePoints() + ")", ShowStats);
 	}
-	box.name += "</li>";
-	NewListElement("Equipment");
-	NewListElement("Quest Log");
+	else {
+		NewListElement("Stats", ShowStats);
+	}
+	NewListElement("Equipment", ShowEquipment);
+	NewListElement("Quest Log", ShowQuests);
 	PrintBox();
 }
 
-function BrowsePlayer(num){
+function ShowInventory(){
 	var player = localStorage.getObj("player");
-
-	if (num == 0){
-		box = {name:"", functs:ViewItem};
-		InitializeBox("Your Inventory (" + player.gold + "g)");
-		for(var i = 0; i < player.items.length; ++i){
-			NewListElement(player.items[i].name);
-		}
-		PrintBox();
+	
+	InitializeTitle("Your Inventory (" + player.gold + "g)");
+	for(var i = 0; i < player.items.length; ++i){
+		NewListElement(player.items[i].name, partial(ViewItem, player.items[i])); // Pass Argument
 	}
-	else if (num == 1){
-		box = {name:"", functs:LevelStat};
-		InitializeBox("You are level " + player.level + "<br>" + "Strength: " + player.strength + " Speed: "  + player.speed);
-		NewListElement("Level Strength");
-		NewListElement("Level Speed");
-		PrintBox();
-	}
-	else if (num == 2){
-		var weapon = player.weapon || default_weapon;
-		var armour = player.armour || default_armour;
-		InitializeBox("Your Equipment");
-		box.functs = ViewEquipped;
-		NewListElement("Weapon: " + weapon.name);
-		NewListElement("Armour: " + armour.name);
-		PrintBox()
-	}
-	else if (num == 3){
-		InitializeBox("Active Quests");
-		box.functs = ViewActiveQuest;
-		for (var i = 0; i < player.quests.length; ++i){
-			NewListElement(player.quests[i].name);
-		}
-		PrintBox();
-	}
+	PrintBox();
 }
 
-function ViewItem(num){
+function ShowStats(){
 	var player = localStorage.getObj("player");
-	if (player.items[num]){
-		InitializeBox(player.items[num].name);
-		box.item = num;
-		box.functs = UseItem;
-		NewListElement("Equip");
-		NewListElement("Destroy");
-		PrintBox();
-	}
+	
+	InitializeTitle("You are level " + player.level + "<br>" + "Strength: " + player.strength + " Speed: "  + player.speed);
+	NewListElement("Level Strength", LevelStrength);
+	NewListElement("Level Speed", LevelSpeed);
+	PrintBox();
 }
 
-function UseItem(num){
+function ShowEquipment(){
 	var player = localStorage.getObj("player");
-	if (num == 0){
-		if (player.items[box.item].use == "weapon"){
-			if (player.weapon){
-				player.items.push(player.weapon);
-			}
-			player.weapon = player.items[box.item];
-			player.items.splice(box.item, 1);
-		}
-		else if (player.items[box.item].use == "armour"){
-			if (player.armour){
-				player.items.push(player.armour);
-			}
-			player.armour = player.items[box.item];
-			player.items.splice(box.item, 1);
-		}
-	}
-	else if (num == 1){
-		player.items.splice(box.item, 1);
-	}
-	localStorage.setObj("player", player);
-	BrowsePlayer(0);
+	
+	var weapon = player.weapon || default_weapon;
+	var armour = player.armour || default_armour;
+	InitializeTitle("Your Equipment");
+	NewListElement("Weapon: " + weapon.name, partial(ViewItem, weapon)); // Pass Argument
+	NewListElement("Armour: " + armour.name, partial(ViewItem, armour)); // Pass Argument
+	PrintBox()
 }
 
-function LevelStat(num){
+function ShowQuests(){
 	var player = localStorage.getObj("player");
-	if (num == 0 && GetFreePoints()){
+	
+	InitializeTitle("Active Quests");
+	for (var i = 0; i < player.quests.length; ++i){
+		NewListElement(player.quests[i].name, partial(ViewQuest, player.quests[i])); // Pass Argument
+	}
+	PrintBox();
+}
+
+function LevelStrength(){
+	var player = localStorage.getObj("player");
+	
+	if (GetFreePoints()){
 		player.strength += 1;
+		localStorage.setObj("player", player);
+		ShowStats();
 	}
-	else if (num == 1 && GetFreePoints()){
+}
+
+function LevelSpeed(){
+	var player = localStorage.getObj("player");
+
+	if (GetFreePoints()){
 		player.speed += 1;
+		localStorage.setObj("player", player);
+		ShowStats();
 	}
-	localStorage.setObj("player", player);
-	BrowsePlayer(1);
 }
 
 function GetFreePoints(){
 	var player = localStorage.getObj("player"); 
 	return player.level - player.strength - player.speed;
 }
-
-function ViewEquipped(num) {
-	var player = localStorage.getObj("player");
-	box.item = false;
-	if (num == 0 && player.weapon){
-		box.item = player.weapon;
-	}
-	else if (num == 1 && player.armour){
-		box.item = player.armour;
-	}
-	
-	if (box.item){
-		InitializeBox(box.item.name);
-		box.functs = UseEquipped;
-		NewListElement("Unequip");
-		PrintBox();
-	}
-}
-
-function UseEquipped(num){
-	var player = localStorage.getObj("player");
-	if (num == 0){
-		if (box.item.use == "weapon"){
-			player.items.push(box.item);
-			player.weapon = null;
-		}
-		else if (box.item.use == "armour"){
-			player.items.push(box.item);
-			player.armour = null;
-		}
-		localStorage.setObj("player", player);
-		BrowsePlayer(2);
-	}
-}
-
-function ViewActiveQuest(num){
-	var player = localStorage.getObj("player");
-	if (player.quests[num]){
-		box.quest = num;
-		InitializeBox(player.quests[num].description);
-		box.functs = UseQuest;
-		NewListElement("Abandon");
-		PrintBox();
-	}
-}
-
-function UseQuest(num){
-	var player = localStorage.getObj("player");
-	if (num == 0){
-		player.quests.splice(box.quest, 1);
-		localStorage.setObj("player", player);
-		BrowsePlayer(3);
-	}
-}
-
-
 
 

@@ -1,4 +1,4 @@
-function FightEnemy(num, hits) {
+function EngageEnemy(hits) {
 	hits = hits || ["", ""];
 	for (var i = 0; i < hits.length; ++i){
 		if (hits[i] == "miss"){
@@ -9,22 +9,26 @@ function FightEnemy(num, hits) {
 		}
 	}
 	
-	if (num == 0){
-		can_move = false;
-		var player = localStorage.getObj("player");
-		InitializeBox("Your Health: " + player.health + " " + hits[1] + "<br>Enemy Health: " + box.npc.health + " " + hits[0]);
-		box.functs = HitEnemy;
+	can_move = false;
+	var player = localStorage.getObj("player");
 	
-		NewListElement("Strong Attack");
-		NewListElement("Swift Attack");
-	
-		PrintBox();
-	}
+	InitializeTitle("Your Health: " + player.health + " " + hits[1] + "<br>Enemy Health: " + box.current_interaction.health + " " + hits[0]);	
+	NewListElement("Strong Attack", StrongAttack);
+	NewListElement("Swift Attack", SwiftAttack);	
+	PrintBox();
 }
 
-function HitEnemy(num){
+function StrongAttack() {
+	HitEnemy("strong");
+}
+
+function SwiftAttack() {
+	HitEnemy("swift");
+}
+
+function HitEnemy(attack){
 	var player = localStorage.getObj("player");
-	var enemy = box.npc;
+	var enemy = box.current_interaction;
 	var your_weapon = player.weapon || default_weapon;
 	var your_armour = player.armour || default_armour;
 	var enemy_weapon = enemy.weapon || default_weapon;
@@ -40,16 +44,13 @@ function HitEnemy(num){
 	var enemy_damage = enemy_weapon.damage;
 	var enemy_resistance = enemy_armour.resistance;
 	
-	if (num == 0){
+	if (attack == "strong"){
 		your_strength *= 2;
 		your_speed /= 2;
 	}
-	else if (num == 1){
+	else if (attack == "swift"){
 		your_speed *= 2;
 		your_strength /= 2;
-	}
-	else {
-		return;
 	}
 	
 	var your_hit = "miss";
@@ -76,7 +77,7 @@ function HitEnemy(num){
 		return;
 	}
 	else {
-		FightEnemy(0, [your_hit, enemy_hit]);
+		EngageEnemy([your_hit, enemy_hit]);
 	}
 }
 
@@ -91,7 +92,7 @@ function Die(){
 
 function KillEnemy(){
 	can_move = true;
-	ReplaceMap(box.npc.position, ".");
+	ReplaceMap(box.current_interaction.positions[0], ".");
 	PrintMap();
 }
 

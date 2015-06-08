@@ -5,17 +5,17 @@ function GenerateCharacter(position){
 
 function GenerateStore(store){
 	environment.stores.push(store);
-	for (var i = 0; i < store.entrances.length; ++i){
-		ReplaceMap(store.entrances[i], "/");
+	for (var i = 0; i < store.positions.length; ++i){
+		ReplaceMap(store.positions[i], "/");
 	}
 }
 
 function GenerateNPC(npc){
 	environment.NPCs.push(npc);
-	if (npc.type == "questgiver"){
-		ReplaceMap(npc.position, "Q");
+	if (npc.use == "questgiver"){
+		ReplaceMap(npc.positions[0], "Q");
 	}
-	else if (npc.type == "enemy"){
-		ReplaceMap(npc.position, "E");
+	else if (npc.use == "enemy"){
+		ReplaceMap(npc.positions[0], "E");
 	}
 }

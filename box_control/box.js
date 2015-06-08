@@ -1,104 +1,78 @@
-var box;
+var box = {title:"", list:[], current_interaction:null};
 var previous_symbol = "";
 
-function InitializeBox(title){
-	box.name = title + "<br><ol>";
+function ClearInteraction(){
+	box.current_interaction = null;
 }
 
-function NewListElement(title, is_blue, is_grey){
+function InitializeTitle(title){
+	box.list = [];
+	box.title = title;
+}
+
+function NewListElement(title, fnc, is_blue, is_grey){
 	is_grey = is_grey || false;
 	is_blue = is_blue || false;
 	
-	box.name += "<li";
+	var list_text = "<li";
 	if (is_blue){
-		box.name += " style=\"color:blue;\"";
+		list_text += " style=\"color:blue;\"";
 	}
 	else if (is_grey){
-		box.name += " style=\"color:grey;\"";
+		list_text += " style=\"color:grey;\"";
 	}
-	box.name += ">" + title + "</li>";
+	list_text += ">" + title + "</li>";
+	
+	box.list.push({text:list_text, funct:fnc})
 }
 
 function PrintBox(){
-	box.name += "</ol>";
-	document.getElementById("box").innerHTML = box.name;
+	var html = box.title + "<br><ol>"
+	for (var i = 0; i < box.list.length; ++i){
+		html += box.list[i].text;
+	}
+	html += "</ol>";
+	document.getElementById("box").innerHTML = html;
+}
+
+function GetIndexOfObject(object, array){
+	for (var i = 0; i < array.length; ++i){
+		if (object.name == array[i].name){
+			return i;
+		}
+	}
+	return null;
+}
+
+function GetObjectFromPosition(position, array){
+	for (var i = 0; i < array.length; ++i){
+		for (var j = 0; j < array[i].positions.length; ++j){
+			if (position.x == array[i].positions[j].x && position.y == array[i].positions[j].y){
+				return array[i];
+			}
+		}
+	}
+	return null;
 }
 
 function GenerateBox(){
 	var symbol = GetMapElement(interact_place);
 	
 	if (previous_symbol != "." && symbol == "."){ // Moving around
+		ClearInteraction();
 		PLayerBox();
 	}
 	else if (symbol == "/"){ // Entering a store
-		box = {name:"", store:null, functs:BuyItem};
-
-		for (var i = 0; i < environment.stores.length; ++i){
-			for (var j = 0; j < environment.stores[i].entrances.length; ++j){
-				if (environment.stores[i].entrances[j].x == interact_place.x && environment.stores[i].entrances[j].y == interact_place.y){
-					box.store = environment.stores[i];
-				}
-			}
-		}
-		if (box.store){
-			ShowStore();
-		}
+		box.current_interaction = GetObjectFromPosition(interact_place, environment.stores);
+		ShowStore();
 	}
 	else if (symbol == " "){ // Inside previous element
-		if (box.store){
-			ShowStore();
-		}	
+		ShowStore();
 	}
 	else if (ElementAtPlace(interact_place, ["Q", "E"])){ // Going over an NPC
-		box = {name:"", npc:null, functs:NullFunction};
-		
-		for (var i = 0; i < environment.NPCs.length; ++i){
-			if (environment.NPCs[i].position.x == interact_place.x && environment.NPCs[i].position.y == interact_place.y){
-				box.npc = environment.NPCs[i];
-			}
-		}
-		if (box.npc){
-			ShowNPC();
-		}
+		box.current_interaction = GetObjectFromPosition(interact_place, environment.NPCs);
+		ShowNPC();
 	}
 	
 	previous_symbol = symbol;
-}
-
-function BrowsePlayer(num){
-	var player = localStorage.getObj("player");
-	
-	if (num == 0){
-		box = {name:"", functs:NullFunction};
-		InitializeBox("Your Inventory");
-		NewListElement("Gold: " + player.gold);
-		for(var i = 0; i < player.items.length; ++i){
-			box.name += "<li>" + player.items[i].name + "</li>";
-		}
-		PrintBox();
-	}
-	else if (num == 1){
-		box = {name:"", functs:LevelStat};
-		InitializeBox("You are level " + player.level + "<br>" + "Strength: " + player.strength + " Speed: "  + player.speed);
-		NewListElement("Level Strength");
-		NewListElement("Level Speed");
-		PrintBox();
-	}
-}
-
-function LevelStat(num){
-	var player = localStorage.getObj("player");
-	if (num == 0 && GetFreePoints()){
-		player.strength += 1;
-	}
-	else if (num == 1 && GetFreePoints()){
-		player.speed += 1;
-	}
-	localStorage.setObj("player", player);
-	BrowsePlayer(1);
-}
-
-function GetFreePoints(){
-	var player = localStorage.getObj("player"); 
-	return player.level - player.strength - player.speed;
 }

@@ -1,62 +1,32 @@
 function ShowNPC(){
-	if (box.npc.type == "enemy"){
-		InitializeBox(box.npc.name + " (level " + box.npc.level + ")");
-	}
-	else {
-		InitializeBox(box.npc.name);
-	}
-	var engage;
+	if (box.current_interaction.type == "npc"){
+		if (box.current_interaction.use == "enemy"){
+			InitializeTitle(box.current_interaction.name + " (level " + box.current_interaction.level + ")");
+		}
+		else {
+			InitializeTitle(box.current_interaction.name);
+		}
 
-	if (box.npc.type == "questgiver"){
-		engage = "Help";
-		box.functs = EngageQuestgiver;
-	}
-	
-	if (box.npc.type == "enemy"){
-		engage = "Fight";
-		box.functs = FightEnemy;
-	}
-	
-	NewListElement(engage);
-	PrintBox();
-}
-
-function EngageQuestgiver(num){
-	var player = localStorage.getObj("player");
-
-	if (num == 0){
-		InitializeBox("Available Quests");
-		box.functs = ViewQuest;
-
-		for (var i = 0; i < box.npc.quests.length; ++i){
-			NewListElement(box.npc.quests[i].name, ContainsObject(box.npc.quests[i], player.quests), false);
+		if (box.current_interaction.use == "questgiver"){
+			NewListElement("Help", EngageQuestgiver);
+		}
+		else if (box.current_interaction.use == "enemy"){
+			NewListElement("Fight", EngageEnemy);
 		}
 		
 		PrintBox();
 	}
 }
 
-function ViewQuest(num){
+function EngageQuestgiver(){
 	var player = localStorage.getObj("player");
-	if (box.npc.quests.length > num && !ContainsObject(box.npc.quests[num], player.quests)){
-		InitializeBox(box.npc.quests[num].description);
-		box.functs = AcceptQuest;
+	var npc = box.current_interaction;
 
-		NewListElement("Accept");
-		NewListElement("Decline");
+	InitializeTitle("Available Quests");
 
-		PrintBox();
+	for (var i = 0; i < npc.quests.length; ++i){
+		NewListElement(npc.quests[i].name, partial(ViewQuest, npc.quests[i]), ContainsObject(npc.quests[i], player.quests), false); // Pass Argument
 	}
-}
-
-function AcceptQuest(num){
-	if (num == 0){
-		var player = localStorage.getObj("player");
-		player.quests.push(box.npc.quests[num]);
-		localStorage.setObj("player", player);
-		EngageQuestgiver(0);
-	}
-	else if (num == 1){
-		EngageQuestgiver(0);
-	}
+		
+	PrintBox();
 }

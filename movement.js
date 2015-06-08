@@ -36,15 +36,17 @@ document.onkeydown = function(evt) {
 			move.down = setInterval(function(){StepCharacter("down")}, move_speed);
 			move_direction.down = true;
 		}
-		else if (evt.keyCode == 81){
+		else if (evt.keyCode == 81){ // Quit Box
 			previous_symbol = "";
 			interact_place = character;
 			GenerateBox();
 		}
 	}
-	if (evt.keyCode >= 49 && evt.keyCode <= 57){
+	if (evt.keyCode >= 49 && evt.keyCode <= 57){ // Activate Box Function 
 		var i = evt.keyCode - 49;
-		box.functs(i);
+		if (box.list[i]){
+			box.list[i].funct();
+		}
 	}
 }
 
