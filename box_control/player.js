@@ -19,6 +19,7 @@ function ShowInventory(){
 	
 	InitializeTitle("Your Inventory (" + player.gold + "g)");
 	for(var i = 0; i < player.items.length; ++i){
+		//window.alert(localStorage.getItem("player"));
 		NewListElement(player.items[i].name, partial(ViewItem, player.items[i])); // Pass Argument
 	}
 	PrintBox();
@@ -36,8 +37,8 @@ function ShowStats(){
 function ShowEquipment(){
 	var player = localStorage.getObj("player");
 	
-	var weapon = player.weapon || default_weapon;
-	var armour = player.armour || default_armour;
+	var weapon = player.equipment.weapon;
+	var armour = player.equipment.armour;
 	InitializeTitle("Your Equipment");
 	NewListElement("Weapon: " + weapon.name, partial(ViewItem, weapon)); // Pass Argument
 	NewListElement("Armour: " + armour.name, partial(ViewItem, armour)); // Pass Argument

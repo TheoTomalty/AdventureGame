@@ -11,14 +11,17 @@ function ViewItem(item){
 	}
 	
 	InitializeTitle(item.name + quality);
-	if (box.current_interaction && box.current_interaction.type == "store" && GetIndexOfObject(item, box.current_interaction.items) != null){
-		NewListElement("Buy Item", partial(BuyItem, item), false, (player.gold < item.price || ContainsObject(item, player.items))); //pass argument
+	if (box.current_interaction && box.current_interaction.type == "store" && ContainsObject(item, box.current_interaction.items)){
+		NewListElement("Buy Item", partial(BuyItem, item), false, (player.gold < item.price || HasItem(item))); //pass argument
 	}
-	else if (GetIndexOfObject(item, player.items) != null){
+	else if (box.current_interaction && box.current_interaction.type == "chest" && ContainsObject(item, box.current_interaction.items)){
+		NewListElement("Take Item", partial(TakeItem, item)); //pass argument
+	}
+	else if (ContainsObject(item, player.items)){
 		NewListElement("Equip", partial(EquipItem, GetIndexOfObject(item, player.items))); //pass argument as index
 		NewListElement("Destroy", partial(DestroyItem, GetIndexOfObject(item, player.items))); //pass argument as index
 	}
-	else if ((player.weapon && item.name == player.weapon.name) || (player.armour && item.name == player.armour.name)){
+	else if (player.equipment[item.use] && player.equipment[item.use].name == item.name && player.equipment[item.use].name != default_equipment[item.use].name){
 		NewListElement("Unequip", partial(UnequipItem, item)); //pass argument
 		NewListElement("Destroy", partial(DestroyEquipment, item)); //pass argument
 	}
@@ -29,23 +32,27 @@ function ViewItem(item){
 function EquipItem(index) {
 	var player = localStorage.getObj("player");
 	
-	if (player.items[index].use == "weapon"){
-		if (player.weapon){
-			player.items.push(player.weapon);
+	var item = player.items[index];
+	
+	if (CanEquip(item)){
+		if (player.equipment[item.use].name != default_equipment[item.use].name){
+			player.items.push(player.equipment[item.use]);
 		}
-		player.weapon = player.items[index];
-		player.items.splice(index, 1);
-	}
-	else if (player.items[index].use == "armour"){
-		if (player.armour){
-			player.items.push(player.armour);
-		}
-		player.armour = player.items[index];
+		player.equipment[item.use] = item;
 		player.items.splice(index, 1);
 	}
 	
 	localStorage.setObj("player", player);
 	ShowInventory();
+}
+
+function CanEquip(item){
+	var player = localStorage.getObj("player");
+	
+	if (player.equipment[item.use]){
+		return true;
+	}
+	return false;
 }
 
 function DestroyItem(index) {
@@ -58,14 +65,8 @@ function DestroyItem(index) {
 function UnequipItem(item){
 	var player = localStorage.getObj("player");
 	
-	if (item.use == "weapon"){
-		player.items.push(item);
-		player.weapon = null;
-	}
-	else if (item.use == "armour"){
-		player.items.push(item);
-		player.armour = null;
-	}
+	player.items.push(item);
+	player.equipment[item.use] = default_equipment[item.use];
 	
 	localStorage.setObj("player", player);
 	ShowEquipment();
@@ -74,12 +75,7 @@ function UnequipItem(item){
 function DestroyEquipment(item){
 	var player = localStorage.getObj("player");
 	
-	if (item.use == "weapon"){
-		player.weapon = null;
-	}
-	else if (item.use == "armour"){
-		player.armour = null;
-	}
+	player.equipment[item.use] = default_equipment[item.use];
 	
 	localStorage.setObj("player", player);
 	ShowEquipment();
@@ -89,15 +85,33 @@ function BuyItem(item) {
 	var player = localStorage.getObj("player"); 
 	var after_gold = player.gold - item.price;
 	
-	if (after_gold >= 0 && !(item.type == "item" && ContainsObject(item, player.items))){
-		if (item.type == "item"){
-			player.gold = after_gold;
+	if (after_gold >= 0 && !(item.type == "item" && HasItem(item))){
+		player.gold = after_gold;
+		var player = localStorage.setObj("player", player);
+		GetItem(item);
+	}
+}
+
+function TakeItem(item){
+	var chest_index = GetIndexOfObject(box.current_interaction, environment.chests);
+	environment.chests[chest_index].items.splice(GetIndexOfObject(item, environment.chests[chest_index].items), 1);
+	GetItem(item); 
+}
+
+function GetItem(item) {
+	var player = localStorage.getObj("player"); 
+
+	if (item.type == "item"){
+		if (CanEquip(item) && player.equipment[item.use].name == default_equipment[item.use].name){		
+			player.equipment[item.use] = item;
+		}
+		else {
 			player.items.push(item);
 		}
-		else if (item.type == "instant"){
-			player.gold = after_gold;
-		}
 	}
+	else if (item.type == "instant"){
+	}
+
 	localStorage.setObj("player", player);
 	GenerateBox();
 }

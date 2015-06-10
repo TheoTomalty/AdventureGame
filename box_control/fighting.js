@@ -29,20 +29,16 @@ function SwiftAttack() {
 function HitEnemy(attack){
 	var player = localStorage.getObj("player");
 	var enemy = box.current_interaction;
-	var your_weapon = player.weapon || default_weapon;
-	var your_armour = player.armour || default_armour;
-	var enemy_weapon = enemy.weapon || default_weapon;
-	var enemy_armour = enemy.armour || default_armour;
 	
 	var your_strength = 1 + player.strength;
 	var your_speed = 1 + player.speed;
-	var your_damage = your_weapon.damage;
-	var your_resistance = your_armour.resistance;
+	var your_damage = player.equipment.weapon.damage;
+	var your_resistance = player.equipment.armour.resistance;
 
 	var enemy_strength = 1 + enemy.strength;
 	var enemy_speed = 1 + enemy.speed;
-	var enemy_damage = enemy_weapon.damage;
-	var enemy_resistance = enemy_armour.resistance;
+	var enemy_damage = enemy.equipment.weapon.damage;
+	var enemy_resistance = enemy.equipment.armour.resistance;
 	
 	if (attack == "strong"){
 		your_strength *= 2;
@@ -74,7 +70,7 @@ function HitEnemy(attack){
 	} 
 	else if (enemy.health <= 0){
 		KillEnemy();
-		return;
+		return 0;
 	}
 	else {
 		EngageEnemy([your_hit, enemy_hit]);
@@ -92,7 +88,10 @@ function Die(){
 
 function KillEnemy(){
 	can_move = true;
-	ReplaceMap(box.current_interaction.positions[0], ".");
+
+	var corpse_name = "Corpse of " + box.current_interaction.name;
+	GenerateChest({name:corpse_name, type:"chest", items:box.current_interaction.loot, positions:box.current_interaction.positions});
+	ClearInteraction(); // No longer interacting with place the chest dropped
 	PrintMap();
 }
 

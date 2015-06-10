@@ -2,6 +2,7 @@ var box = {title:"", list:[], current_interaction:null};
 var previous_symbol = "";
 
 function ClearInteraction(){
+	interact_place = character;
 	box.current_interaction = null;
 }
 
@@ -33,6 +34,15 @@ function PrintBox(){
 	}
 	html += "</ol>";
 	document.getElementById("box").innerHTML = html;
+}
+
+function ContainsObject(obj, list) {
+	for (var i = 0; i < list.length; i++) {
+		if (list[i].name === obj.name) {
+			return true;
+		}
+	}
+	return false;
 }
 
 function GetIndexOfObject(object, array){
@@ -72,6 +82,10 @@ function GenerateBox(){
 	else if (ElementAtPlace(interact_place, ["Q", "E"])){ // Going over an NPC
 		box.current_interaction = GetObjectFromPosition(interact_place, environment.NPCs);
 		ShowNPC();
+	}
+	else if (symbol == "C"){
+		box.current_interaction = GetObjectFromPosition(interact_place, environment.chests);
+		ShowChest();
 	}
 	
 	previous_symbol = symbol;

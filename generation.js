@@ -19,3 +19,8 @@ function GenerateNPC(npc){
 		ReplaceMap(npc.positions[0], "E");
 	}
 }
+
+function GenerateChest(chest){
+	environment.chests.push(chest);
+	ReplaceMap(chest.positions[0], "C");
+}

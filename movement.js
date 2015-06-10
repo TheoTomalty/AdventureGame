@@ -91,12 +91,12 @@ function StepCharacter(direction){
 
 	// Hinder movement if necessary
 	var symbol = GetMapElement(next_character); 
-	if (ElementAtPlace(next_character, [".", "/", " "])){
+	if (ElementAtPlace(next_character, [".", "/", " ", "C"])){
 		character = next_character;
 		interact_place = character;
 		PrintMap();
 	}
-	else if (!ElementAtPlace(next_character, ["#"])){
+	else if (!ElementAtPlace(next_character, ["#", "-", "|"])){
 		interact_place = next_character;
 		PrintMap();
 	}
