@@ -12,7 +12,7 @@ function ViewItem(item){
 	
 	InitializeTitle(item.name + quality);
 	if (box.current_interaction && box.current_interaction.type == "store" && ContainsObject(item, box.current_interaction.items)){
-		NewListElement("Buy Item", partial(BuyItem, item), false, (player.gold < item.price || HasItem(item))); //pass argument
+		NewListElement("Buy Item" + " (" + item.price + "g)", partial(BuyItem, item), false, (player.gold < item.price || HasItem(item))); //pass argument
 	}
 	else if (box.current_interaction && box.current_interaction.type == "chest" && ContainsObject(item, box.current_interaction.items)){
 		NewListElement("Take Item", partial(TakeItem, item)); //pass argument

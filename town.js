@@ -10,8 +10,8 @@ function GenerateTown(){
 	"#.#      #....#-----#.#<br>" +
 	"#.#      #....#     #.#<br>" +
 	"#.#      #....#     #.#<br>" +
-	"#.#      #....#######.#<br>" +
-	"#.########............#<br>" +
+	"#..#    #.....#######.#<br>" +
+	"#...####..............#<br>" +
 	"#.....................#<br>" +
 	"#.....................#<br>" +
 	"#.....................#<br>" +
@@ -28,7 +28,7 @@ function GenerateTown(){
 	GenerateCharacter({x:10, y:10});
 
 	// Generate Armory
-	var armoury = {name:"The Armory", type:"store", items:[], positions:[{x:8, y:4}, {x:4, y:8}]};
+	var armoury = {name:"The Armory", type:"store", items:[], positions:[{x:4, y:8}, {x:5, y:8}]};
 		armoury.items.push({name:"Shield", resistance:2, price:10, type:"item", use:"armour"});
 		armoury.items.push({name:"Cloth Armor", resistance:2, price:20, type:"item", use:"armour"});
 		armoury.items.push({name:"Leather Armor", resistance:4, price:30, type:"item", use:"armour"});
@@ -54,6 +54,9 @@ function GenerateTown(){
 	
 	var test_enemy = {name:"Enemy", type:"npc", use:"enemy", health:200, level:1, strength:1, speed:0, equipment:default_equipment, loot:[{name:"Health Potion", restoration:50, price:5, type:"item", use:"consumable"}], positions:[{x:4, y:16}]};
 	GenerateNPC(test_enemy);
+	
+	var woods_gate = {Name:"Woods"};
+	
 	
 	PrintMap();
 }

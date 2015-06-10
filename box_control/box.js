@@ -28,11 +28,17 @@ function NewListElement(title, fnc, is_blue, is_grey){
 }
 
 function PrintBox(){
-	var html = box.title + "<br><ol>"
-	for (var i = 0; i < box.list.length; ++i){
-		html += box.list[i].text;
+	var html = box.title + "<br>"
+	if (box.list.length != 0){
+		html += "<ol>";
+		for (var i = 0; i < box.list.length; ++i){
+			html += box.list[i].text;
+		}
+		html += "</ol>";
 	}
-	html += "</ol>";
+	else {
+		html += "<br><-- Nothing Here -->";
+	}
 	document.getElementById("box").innerHTML = html;
 }
 
