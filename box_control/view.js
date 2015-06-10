@@ -120,7 +120,7 @@ function GetItem(item) {
 function ViewQuest(quest) {
 	var player = localStorage.getObj("player");
 	
-	InitializeTitle(quest.description);
+	InitializeTitle("<p style=\"width: 200px;\">" + quest.description + "</p>");
 	if (GetIndexOfObject(quest, player.quests) != null){
 		NewListElement("Abandon", partial(AbandonQuest, GetIndexOfObject(quest, player.quests))); // Pass argument as index
 	}
