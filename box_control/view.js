@@ -18,8 +18,14 @@ function ViewItem(item){
 		NewListElement("Take Item", partial(TakeItem, item)); //pass argument
 	}
 	else if (ContainsObject(item, player.items)){
-		NewListElement("Equip", partial(EquipItem, GetIndexOfObject(item, player.items))); //pass argument as index
-		NewListElement("Destroy", partial(DestroyItem, GetIndexOfObject(item, player.items))); //pass argument as index
+		if (CanEquip(item)){
+			NewListElement("Equip", partial(EquipItem, GetIndexOfObject(item, player.items))); //pass argument as index
+			NewListElement("Destroy", partial(DestroyItem, GetIndexOfObject(item, player.items))); //pass argument as index
+		}
+		else if (item.type == "consumable"){
+			NewListElement("Consume", partial(ConsumeItem, GetIndexOfObject(item, player.items))); //pass argument as index
+			NewListElement("Destroy", partial(DestroyItem, GetIndexOfObject(item, player.items))); //pass argument as index
+		}
 	}
 	else if (player.equipment[item.use] && player.equipment[item.use].name == item.name && player.equipment[item.use].name != default_equipment[item.use].name){
 		NewListElement("Unequip", partial(UnequipItem, item)); //pass argument
@@ -31,7 +37,6 @@ function ViewItem(item){
 // USE ITEM
 function EquipItem(index) {
 	var player = localStorage.getObj("player");
-	
 	var item = player.items[index];
 	
 	if (CanEquip(item)){
@@ -53,6 +58,20 @@ function CanEquip(item){
 		return true;
 	}
 	return false;
+}
+
+function ConsumeItem(index){
+	var player = localStorage.getObj("player");
+	var item = player.items[index];
+	
+	if (item.use == "heal" && player.health != max_health){
+		Heal(item.restoration);
+		player.items.splice(index, 1);
+	}
+	
+	
+	localStorage.setObj("player", player);
+	ShowInventory();
 }
 
 function DestroyItem(index) {
@@ -89,6 +108,7 @@ function BuyItem(item) {
 		player.gold = after_gold;
 		var player = localStorage.setObj("player", player);
 		GetItem(item);
+		GenerateBox();
 	}
 }
 
@@ -96,12 +116,13 @@ function TakeItem(item){
 	var chest_index = GetIndexOfObject(box.current_interaction, environment.chests);
 	environment.chests[chest_index].items.splice(GetIndexOfObject(item, environment.chests[chest_index].items), 1);
 	GetItem(item); 
+	GenerateBox();
 }
 
 function GetItem(item) {
 	var player = localStorage.getObj("player"); 
 
-	if (item.type == "item"){
+	if (item.type != "instant"){
 		if (CanEquip(item) && player.equipment[item.use].name == default_equipment[item.use].name){		
 			player.equipment[item.use] = item;
 		}
@@ -109,11 +130,10 @@ function GetItem(item) {
 			player.items.push(item);
 		}
 	}
-	else if (item.type == "instant"){
+	else {
 	}
 
 	localStorage.setObj("player", player);
-	GenerateBox();
 }
 
 // VIEW QUESTS
@@ -147,4 +167,19 @@ function AbandonQuest(index) {
 	player.quests.splice(index, 1);
 	localStorage.setObj("player", player);
 	ShowQuests();
+}
+
+//Item Actions
+function Heal(restoration){
+	var player = localStorage.getObj("player");
+	var new_health = player.health + restoration;
+	
+	if (new_health < max_health){
+		player.health = new_health;
+	}
+	else {
+		player.health = max_health;
+	}
+	
+	localStorage.setObj("player", player);
 }

@@ -19,11 +19,12 @@ function partial(func /*, 0..n args */) {
 // Setting up game
 var game_started = false; // Should not change after made true
 var can_move = true;
-//localStorage.clear();
+localStorage.clear();
 
 var default_equipment = {weapon:{name:"Fists", use:"weapon", damage:10}, armour:{name:"Cloth", use:"armour", resistance:1}};
+var max_health = 200;
 if (localStorage.getObj("player") === null){
-	var player = {health:200, level:3, strength:0, speed:0, gold:10, items:[], equipment:default_equipment, quests:[]};
+	var player = {health:max_health, level:3, strength:0, speed:0, gold:10, items:[], equipment:default_equipment, quests:[]};
 	localStorage.setObj("player", player);
 }
 

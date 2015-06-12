@@ -43,7 +43,7 @@ function GenerateTown(){
 	var general = {name:"The General Store", type:"store", positions:[{x:13, y:5}, {x:16, y:7}], items:[]};
 		general.items.push({name:"Ham", price:1, type:"instant", use:"heal"});
 		general.items.push({name:"Steak", price:2, type:"instant", use:"heal"});
-		general.items.push({name:"Health Potion", restoration:50, price:5, type:"item", use:"consumable"});
+		general.items.push({name:"Health Potion", restoration:50, price:5, type:"consumable", use:"heal"});
 	GenerateStore(general);
 	
 	var old_man = {name:"Old Man", type:"npc", use:"questgiver", quests:[], positions:[{x:3, y:12}]};
@@ -52,7 +52,7 @@ function GenerateTown(){
 		old_man.quests.push(quest1);
 	GenerateNPC(old_man);
 	
-	var test_enemy = {name:"Enemy", type:"npc", use:"enemy", health:200, level:1, strength:1, speed:0, equipment:default_equipment, loot:[{name:"Health Potion", restoration:50, price:5, type:"item", use:"consumable"}], positions:[{x:4, y:16}]};
+	var test_enemy = {name:"Enemy", type:"npc", use:"enemy", health:max_health, level:1, strength:1, speed:0, equipment:default_equipment, loot:[{name:"Health Potion", restoration:50, price:5, type:"item", use:"consumable"}], positions:[{x:4, y:16}]};
 	GenerateNPC(test_enemy);
 	
 	var woods_gate = {Name:"Woods"};
