@@ -24,3 +24,10 @@ function GenerateChest(chest){
 	environment.chests.push(chest);
 	ReplaceMap(chest.positions[0], "C");
 }
+
+function GenerateGate(gate){
+	environment.gates.push(gate);
+	for (var i = 0; i < gate.positions.length; ++i){
+		ReplaceMap(gate.positions[i], "+");
+	}
+}

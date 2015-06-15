@@ -6,7 +6,7 @@ function ShowStore(){
 		InitializeTitle("You are in " + store.name + " (" + player.gold + "g)");
 
 		for (var i = 0; i < box.current_interaction.items.length; ++i){
-			NewListElement(store.items[i].name + " (" + store.items[i].price + "g)", partial(ViewItem, store.items[i]), HasItem(store.items[i]), store.items[i].price > player.gold); // Pass Argument
+			NewListElement(store.items[i].name + " (" + store.items[i].price + "g)", partial(ViewItem, store.items[i]), (store.items[i].type == "item" && HasItem(store.items[i])), store.items[i].price > player.gold); // Pass Argument
 		}
 		PrintBox();
 	}

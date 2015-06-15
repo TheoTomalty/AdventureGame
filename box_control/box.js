@@ -93,6 +93,10 @@ function GenerateBox(){
 		box.current_interaction = GetObjectFromPosition(interact_place, environment.chests);
 		ShowChest();
 	}
+	else if (symbol == "+"){
+		box.current_interaction = GetObjectFromPosition(interact_place, environment.gates);
+		Travel();
+	}
 	
 	previous_symbol = symbol;
 }

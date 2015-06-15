@@ -29,9 +29,9 @@ function GenerateTown(){
 
 	// Generate Armory
 	var armoury = {name:"The Armory", type:"store", items:[], positions:[{x:4, y:8}, {x:5, y:8}]};
-		armoury.items.push({name:"Shield", resistance:2, price:10, type:"item", use:"armour"});
-		armoury.items.push({name:"Cloth Armor", resistance:2, price:20, type:"item", use:"armour"});
-		armoury.items.push({name:"Leather Armor", resistance:4, price:30, type:"item", use:"armour"});
+		armoury.items.push({name:"Leather Armor", resistance:4, price:20, type:"item", use:"armour"});
+		armoury.items.push({name:"Mail Armor", resistance:8, price:50, type:"item", use:"armour"});
+		armoury.items.push({name:"Plate Armor", resistance:12, price:100, type:"item", use:"armour"});
 	GenerateStore(armoury);
 	
 	var weaponsmith = {name:"The Weapon Store", type:"store", positions:[{x:15, y:13}], items:[]};
@@ -52,10 +52,8 @@ function GenerateTown(){
 		old_man.quests.push(quest1);
 	GenerateNPC(old_man);
 	
-	var test_enemy = {name:"Enemy", type:"npc", use:"enemy", health:max_health, level:1, strength:1, speed:0, equipment:default_equipment, loot:[{name:"Health Potion", restoration:50, price:5, type:"item", use:"consumable"}], positions:[{x:4, y:16}]};
-	GenerateNPC(test_enemy);
-	
-	var woods_gate = {Name:"Woods"};
+	var woods_gate = {name:"Woods", type:"random", positions:[{x:10, y:-1}, {x:11, y:-1}]};
+	GenerateGate(woods_gate);
 	
 	
 	PrintMap();

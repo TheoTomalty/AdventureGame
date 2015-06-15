@@ -20,12 +20,14 @@ function ViewItem(item){
 	else if (ContainsObject(item, player.items)){
 		if (CanEquip(item)){
 			NewListElement("Equip", partial(EquipItem, GetIndexOfObject(item, player.items))); //pass argument as index
-			NewListElement("Destroy", partial(DestroyItem, GetIndexOfObject(item, player.items))); //pass argument as index
 		}
 		else if (item.type == "consumable"){
 			NewListElement("Consume", partial(ConsumeItem, GetIndexOfObject(item, player.items))); //pass argument as index
-			NewListElement("Destroy", partial(DestroyItem, GetIndexOfObject(item, player.items))); //pass argument as index
 		}
+		else if (item.type == "container"){
+			NewListElement("Open", partial(OpenItem, GetIndexOfObject(item, player.items))); //pass argument as index
+		}
+		NewListElement("Destroy", partial(DestroyItem, GetIndexOfObject(item, player.items))); //pass argument as index
 	}
 	else if (player.equipment[item.use] && player.equipment[item.use].name == item.name && player.equipment[item.use].name != default_equipment[item.use].name){
 		NewListElement("Unequip", partial(UnequipItem, item)); //pass argument
@@ -65,10 +67,23 @@ function ConsumeItem(index){
 	var item = player.items[index];
 	
 	if (item.use == "heal" && player.health != max_health){
-		Heal(item.restoration);
 		player.items.splice(index, 1);
+		localStorage.setObj("player", player);
+		Heal(item.restoration);
 	}
 	
+	ShowInventory();
+}
+
+function OpenItem(index) {
+	var player = localStorage.getObj("player");
+	var item = player.items[index];
+	
+	if (item.use == "gold"){
+		player.gold += item.gold;
+		player.items.splice(index, 1);
+		
+	}
 	
 	localStorage.setObj("player", player);
 	ShowInventory();

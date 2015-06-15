@@ -19,7 +19,7 @@ function partial(func /*, 0..n args */) {
 // Setting up game
 var game_started = false; // Should not change after made true
 var can_move = true;
-localStorage.clear();
+//localStorage.clear();
 
 var default_equipment = {weapon:{name:"Fists", use:"weapon", damage:10}, armour:{name:"Cloth", use:"armour", resistance:1}};
 var max_health = 200;
