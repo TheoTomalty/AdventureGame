@@ -1,6 +1,7 @@
 function GenerateCharacter(position){
 	character = position;
 	interact_place = position;
+	PLayerBox();
 }
 
 function GenerateStore(store){

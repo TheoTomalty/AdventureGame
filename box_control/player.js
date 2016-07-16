@@ -1,6 +1,6 @@
 function PLayerBox(){
-	var player = localStorage.getObj("player"); 
-	
+	var player = localStorage.getObj("player");
+
 	InitializeTitle("You are in " + environment.name + " (" + player.health + ")");
 	NewListElement("Inventory", ShowInventory);
 	if (GetFreePoints()){
@@ -11,12 +11,13 @@ function PLayerBox(){
 	}
 	NewListElement("Equipment", ShowEquipment);
 	NewListElement("Quest Log", ShowQuests);
+	NewListElement("Map", ShowMap);
 	PrintBox();
 }
 
 function ShowInventory(){
 	var player = localStorage.getObj("player");
-	
+
 	InitializeTitle("Your Inventory (" + player.gold + "g)");
 	for(var i = 0; i < player.items.length; ++i){
 		//window.alert(localStorage.getItem("player"));
@@ -27,7 +28,7 @@ function ShowInventory(){
 
 function ShowStats(){
 	var player = localStorage.getObj("player");
-	
+
 	InitializeTitle("You are level " + player.level + "<br>" + "Strength: " + player.strength + " Speed: "  + player.speed);
 	NewListElement("Level Strength", LevelStrength);
 	NewListElement("Level Speed", LevelSpeed);
@@ -36,7 +37,7 @@ function ShowStats(){
 
 function ShowEquipment(){
 	var player = localStorage.getObj("player");
-	
+
 	var weapon = player.equipment.weapon;
 	var armour = player.equipment.armour;
 	InitializeTitle("Your Equipment");
@@ -47,7 +48,7 @@ function ShowEquipment(){
 
 function ShowQuests(){
 	var player = localStorage.getObj("player");
-	
+
 	InitializeTitle("Active Quests");
 	for (var i = 0; i < player.quests.length; ++i){
 		NewListElement(player.quests[i].name, partial(ViewQuest, player.quests[i])); // Pass Argument
@@ -57,7 +58,7 @@ function ShowQuests(){
 
 function LevelStrength(){
 	var player = localStorage.getObj("player");
-	
+
 	if (GetFreePoints()){
 		player.strength += 1;
 		localStorage.setObj("player", player);
@@ -76,8 +77,13 @@ function LevelSpeed(){
 }
 
 function GetFreePoints(){
-	var player = localStorage.getObj("player"); 
+	var player = localStorage.getObj("player");
 	return player.level - player.strength - player.speed;
 }
 
+function ShowMap(){
 
+	InitializeTitle("Global Map");
+	SetBodyText(global_map);
+	PrintBox();
+}

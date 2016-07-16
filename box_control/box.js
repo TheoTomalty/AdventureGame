@@ -1,4 +1,4 @@
-var box = {title:"", list:[], current_interaction:null};
+var box = {title:"", list:[], body:"", current_interaction:null};
 var previous_symbol = "";
 
 function ClearInteraction(){
@@ -8,13 +8,18 @@ function ClearInteraction(){
 
 function InitializeTitle(title){
 	box.list = [];
+	box.body = "";
 	box.title = title;
+}
+
+function SetBodyText(text){
+	box.body = text;
 }
 
 function NewListElement(title, fnc, is_blue, is_grey){
 	is_grey = is_grey || false;
 	is_blue = is_blue || false;
-	
+
 	var list_text = "<li";
 	if (is_blue){
 		list_text += " style=\"color:blue;\"";
@@ -23,20 +28,26 @@ function NewListElement(title, fnc, is_blue, is_grey){
 		list_text += " style=\"color:grey;\"";
 	}
 	list_text += ">" + title + "</li>";
-	
+
 	box.list.push({text:list_text, funct:fnc})
 }
 
 function PrintBox(){
-	var html = box.title + "<br>"
+	var html = box.title + "<br>";
+	var exists_something = false;
+	if (box.body != ""){
+		exists_something = true;
+		html += "<p>" + box.body + "</p>";
+	}
 	if (box.list.length != 0){
+		exists_something = true;
 		html += "<ol>";
 		for (var i = 0; i < box.list.length; ++i){
 			html += box.list[i].text;
 		}
 		html += "</ol>";
 	}
-	else {
+	if (!exists_something) {
 		html += "<br><-- Nothing Here -->";
 	}
 	document.getElementById("box").innerHTML = html;
@@ -73,7 +84,7 @@ function GetObjectFromPosition(position, array){
 
 function GenerateBox(){
 	var symbol = GetMapElement(interact_place);
-	
+
 	if (previous_symbol != "." && symbol == "."){ // Moving around
 		ClearInteraction();
 		PLayerBox();
@@ -97,6 +108,6 @@ function GenerateBox(){
 		box.current_interaction = GetObjectFromPosition(interact_place, environment.gates);
 		Travel();
 	}
-	
+
 	previous_symbol = symbol;
 }
