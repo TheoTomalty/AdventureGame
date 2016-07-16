@@ -11,7 +11,7 @@ document.onkeydown = function(evt) {
 	evt = evt || window.event;
 	if (!game_started){
 		game_started = true;
-		GenerateTown();		
+		SetupEnvironment();
 	}
 
 	//Move Character
@@ -42,7 +42,7 @@ document.onkeydown = function(evt) {
 			GenerateBox();
 		}
 	}
-	if (evt.keyCode >= 49 && evt.keyCode <= 57){ // Activate Box Function 
+	if (evt.keyCode >= 49 && evt.keyCode <= 57){ // Activate Box Function
 		var i = evt.keyCode - 49;
 		if (box.list[i]){
 			box.list[i].funct();
@@ -90,7 +90,7 @@ function StepCharacter(direction){
 	}
 
 	// Hinder movement if necessary
-	var symbol = GetMapElement(next_character); 
+	var symbol = GetMapElement(next_character);
 	if (ElementAtPlace(next_character, [".", "/", " ", "C"])){
 		character = next_character;
 		interact_place = character;

@@ -84,6 +84,6 @@ function GetFreePoints(){
 function ShowMap(){
 
 	InitializeTitle("Global Map");
-	SetBodyText(global_map);
+	SetBodyText(GetGlobe());
 	PrintBox();
 }

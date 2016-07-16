@@ -1,3 +1,28 @@
+function GenerateEnvironment(env){
+	ReplaceGlobe(env.globe_loc, env.ch);
+	global_environments.push(env);
+}
+
+function SetupEnvironment(){
+	var player = localStorage.getObj("player");
+	var env = GetEnvironment(player.last_save.globe_loc);
+
+	ClearEnvironment();
+	environment.name = env.name;
+	map = env.map;
+	GenerateCharacter(player.last_save.loc);
+
+	for (var i = 0; i < env.stores.length; ++i){
+		GenerateStore(env.stores[i]);
+	}
+
+	for (var i = 0; i < env.NPCs.length; ++i){
+		GenerateNPC(env.NPCs[i]);
+	}
+
+	PrintMap();
+}
+
 function GenerateCharacter(position){
 	character = position;
 	interact_place = position;

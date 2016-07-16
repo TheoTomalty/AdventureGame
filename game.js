@@ -24,7 +24,7 @@ var can_move = true;
 var default_equipment = {weapon:{name:"Fists", use:"weapon", damage:10}, armour:{name:"Cloth", use:"armour", resistance:1}};
 var max_health = 200;
 if (localStorage.getObj("player") === null){
-	var player = {health:max_health, level:3, strength:0, speed:0, gold:10, items:[], equipment:default_equipment, quests:[]};
+	var player = {health:max_health, level:3, strength:0, speed:0, gold:10, items:[], equipment:default_equipment, quests:[], discovered:[], last_save:{globe_loc:{x:2, y:2}, loc:{x:10, y:10}}};
 	localStorage.setObj("player", player);
 }
 
@@ -32,8 +32,12 @@ var environment;
 ClearEnvironment(); // Initialize environment
 
 // Use when loading new environment
+function EmptyEnv(){
+	return {name:"", map:"", globe_loc:null, ch:"", stores:[], NPCs:[], chests:[], gates:[]};
+}
+
 function ClearEnvironment(){
-	environment = {name:"", stores:[], NPCs:[], chests:[], gates:[]};
+	environment = EmptyEnv();
 }
 
 String.prototype.replaceAt=function(index, ch) {
