@@ -1,3 +1,44 @@
+// Setting up game global variables
+var game_started = false; // Should not change after made true
+var can_move = true;
+//localStorage.clear();
+
+var default_equipment = {weapon:{name:"Fists", use:"weapon", damage:10}, armour:{name:"Cloth", use:"armour", resistance:1}};
+var max_health = 200;
+
+var environment;
+ClearEnvironment(); // Initialize environment
+
+var global_environments = [];
+var global_map = "" +
+
+"^^^^^^^^^^^^^^<br>" +
+"^#######~~~~~~<br>" +
+"^#..###~~~~~~~<br>" +
+"^#...##~~~~~~~<br>" +
+"^....###~~~~~~<br>" +
+"^........~~~~~<br>" +
+"^.........~~~~<br>" +
+"^..........~~~<br>" +
+"^........../~~<br>" +
+"^###....///.~~<br>" +
+"^#####//.....~<br>";
+
+var map;
+
+var move_speed = 100;
+var character = {x:null, y:null};
+var interact_place = {x:null, y:null};
+
+// Movement Variables
+var move = {up:null, left:null, right:null, down:null};
+var move_direction = {up:false, left:false, right:false, down:false};
+
+var box = {title:"", list:[], body:"", current_interaction:null};
+var previous_symbol = "";
+
+
+//Basic Game Functions
 Storage.prototype.setObj = function(key, obj) {
 
 	var o = obj || 'Null';
@@ -16,20 +57,10 @@ function partial(func /*, 0..n args */) {
   };
 }
 
-// Setting up game
-var game_started = false; // Should not change after made true
-var can_move = true;
-//localStorage.clear();
-
-var default_equipment = {weapon:{name:"Fists", use:"weapon", damage:10}, armour:{name:"Cloth", use:"armour", resistance:1}};
-var max_health = 200;
 if (localStorage.getObj("player") === null){
 	var player = {health:max_health, level:3, strength:0, speed:0, gold:10, items:[], equipment:default_equipment, quests:[], discovered:[], last_save:{globe_loc:{x:2, y:2}, loc:{x:10, y:10}}};
 	localStorage.setObj("player", player);
 }
-
-var environment;
-ClearEnvironment(); // Initialize environment
 
 // Use when loading new environment
 function EmptyEnv(){
@@ -45,3 +76,6 @@ String.prototype.replaceAt=function(index, ch) {
 }
 
 function NullFunction(){}
+
+function Develop(){
+}

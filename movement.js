@@ -1,11 +1,3 @@
-var move_speed = 100;
-var character = {x:null, y:null};
-var interact_place = {x:null, y:null};
-
-// Movement Variables
-var move = {up:null, left:null, right:null, down:null};
-var move_direction = {up:false, left:false, right:false, down:false};
-
 // Key Presses
 document.onkeydown = function(evt) {
 	evt = evt || window.event;

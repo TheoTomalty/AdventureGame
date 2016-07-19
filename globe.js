@@ -1,18 +1,3 @@
-var global_environments = [];
-var global_map = "" +
-
-"^^^^^^^^^^^^^^<br>" +
-"^#######~~~~~~<br>" +
-"^#..###~~~~~~~<br>" +
-"^#...##~~~~~~~<br>" +
-"^....###~~~~~~<br>" +
-"^........~~~~~<br>" +
-"^.........~~~~<br>" +
-"^..........~~~<br>" +
-"^........../~~<br>" +
-"^###....///.~~<br>" +
-"^#####//.....~<br>";
-
 function GetGlobe(){
   var player = localStorage.getObj("player");
   return "<tt style=\"letter-spacing: 10px;\">" + TemplReplGlobe(player.last_save.globe_loc, "@") + "</tt>";

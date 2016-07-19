@@ -1,6 +1,3 @@
-var box = {title:"", list:[], body:"", current_interaction:null};
-var previous_symbol = "";
-
 function ClearInteraction(){
 	interact_place = character;
 	box.current_interaction = null;

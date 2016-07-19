@@ -1,5 +1,3 @@
-var map;
-
 // Reloads Screen with updated variables
 function PrintMap(){
 	new_map = TempReplMap(character, "@");
