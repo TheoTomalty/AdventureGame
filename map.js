@@ -1,3 +1,8 @@
+function Map(size) {
+	this.map = [];
+	this.size = size;
+}
+
 // Reloads Screen with updated variables
 function PrintMap(){
 	new_map = TempReplMap(character, "@");

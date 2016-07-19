@@ -3,6 +3,10 @@ a:visited {color:#000;} /* visited link */
 a:hover {color:#555;}   /* mouse over link */
 a:active {color:#999;}  /* selected link */
 
+tt {
+	letter-spacing: 10px;
+}
+
 .overlay {
     height: 100%;
     width: 0;

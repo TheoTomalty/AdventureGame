@@ -1,3 +1,41 @@
+//Box prototype
+function Box(){
+	this.head = "";
+	this.body = "";
+	this.interactions = [];
+}
+
+function BoxManager(){
+	this.boxHTML = function(obj){
+		var new_box = obj.GetBox();
+
+		var html = new_box.head + "<br>";
+		var exists_something = false;
+		if (new_box.body != ""){
+			exists_something = true;
+			html += "<p>" + new_box.body + "</p>";
+		}
+		if (new_box.interactions.length != 0){
+			exists_something = true;
+			html += "<ol>";
+			for (var i = 0; i < new_box.interactions.length; ++i){
+				html += new_box.interactions[i].name;
+			}
+			html += "</ol>";
+		}
+		if (!exists_something) {
+			html += "<br><-- Nothing Here -->";
+		}
+
+		delete new_box;
+		return html;
+	}
+
+	this.Display = function(obj){
+		document.getElementById("box").innerHTML = this.boxHTML(obj);
+	}
+}
+
 function ClearInteraction(){
 	interact_place = character;
 	box.current_interaction = null;
