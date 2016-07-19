@@ -7,7 +7,7 @@ document.onkeydown = function(evt) {
 	}
 
 	//Move Character
-	if (can_move){
+	if (!develop_mode && game_started && can_move){
 		if (evt.keyCode == 87 && !move_direction.up){
 			StepCharacter("up");
 			move.up = setInterval(function(){StepCharacter("up")}, move_speed);
@@ -33,6 +33,9 @@ document.onkeydown = function(evt) {
 			interact_place = character;
 			GenerateBox();
 		}
+	}
+	else if (develop_mode && evt.keyCode == 81){
+		ExitDevelop();
 	}
 	if (evt.keyCode >= 49 && evt.keyCode <= 57){ // Activate Box Function
 		var i = evt.keyCode - 49;

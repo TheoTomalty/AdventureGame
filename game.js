@@ -1,6 +1,7 @@
 // Setting up game global variables
 var game_started = false; // Should not change after made true
 var can_move = true;
+var develop_mode = false;
 //localStorage.clear();
 
 var default_equipment = {weapon:{name:"Fists", use:"weapon", damage:10}, armour:{name:"Cloth", use:"armour", resistance:1}};
@@ -76,6 +77,3 @@ String.prototype.replaceAt=function(index, ch) {
 }
 
 function NullFunction(){}
-
-function Develop(){
-}
