@@ -1,7 +1,7 @@
 var town = EmptyEnv();
 
 town.name = "Town";
-town.globe_loc = {x:2, y:2};
+town.world_loc = {x:2, y:2};
 town.ch = "H";
 town.map = "<tt>" +
 "#######################<br>" +

@@ -1,11 +1,11 @@
 function GenerateEnvironment(env){
-	ReplaceGlobe(env.globe_loc, env.ch);
-	global_environments.push(env);
+	ReplaceWorld(env.world_loc, env.ch);
+	world_environments.push(env);
 }
 
 function SetupEnvironment(){
 	var player = localStorage.getObj("player");
-	var env = GetEnvironment(player.last_save.globe_loc);
+	var env = GetEnvironment(player.last_save.world_loc);
 
 	ClearEnvironment();
 	environment.name = env.name;

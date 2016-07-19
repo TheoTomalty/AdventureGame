@@ -9,8 +9,8 @@ var max_health = 200;
 var environment;
 ClearEnvironment(); // Initialize environment
 
-var global_environments = [];
-var global_map = "" +
+var world_environments = [];
+var world_map = "" +
 
 "^^^^^^^^^^^^^^<br>" +
 "^#######~~~~~~<br>" +
@@ -58,13 +58,13 @@ function partial(func /*, 0..n args */) {
 }
 
 if (localStorage.getObj("player") === null){
-	var player = {health:max_health, level:3, strength:0, speed:0, gold:10, items:[], equipment:default_equipment, quests:[], discovered:[], last_save:{globe_loc:{x:2, y:2}, loc:{x:10, y:10}}};
+	var player = {health:max_health, level:3, strength:0, speed:0, gold:10, items:[], equipment:default_equipment, quests:[], discovered:[], last_save:{world_loc:{x:2, y:2}, loc:{x:10, y:10}}};
 	localStorage.setObj("player", player);
 }
 
 // Use when loading new environment
 function EmptyEnv(){
-	return {name:"", map:"", globe_loc:null, ch:"", stores:[], NPCs:[], chests:[], gates:[]};
+	return {name:"", map:"", world_loc:null, ch:"", stores:[], NPCs:[], chests:[], gates:[]};
 }
 
 function ClearEnvironment(){
