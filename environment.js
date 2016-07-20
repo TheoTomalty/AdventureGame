@@ -13,6 +13,6 @@ function Environment(){
   }
 
   this.GetInteraction = function(){
-    return new Interaction(this.name, this, function(){return null;})
+    return new Interaction(this.name, function(){return null;})
   }
 }

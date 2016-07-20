@@ -16,8 +16,8 @@ function World(name) {
 		return null;
 	}
 
-  this.NewEnvironment = function(){
-    develop_manager.creation_manager.Create(new Environment(), this.obj);
+  this.NewEnvironment = function(world){
+    develop_manager.creation_manager.Create(new Environment(), world);
   }
 
   this.Add = function(env){
@@ -37,7 +37,7 @@ function World(name) {
   this.GetBox = function(){
     var new_box = new Box();
     var new_array = [];
-    new_array.push(new Interaction("New Env", this, this.NewEnvironment));
+    new_array.push(new Interaction("New Env", partial(this.NewEnvironment, this)));
     for (var i = 0; i < this.environments.length; ++i){
       new_array.push(this.environments[i].GetInteraction());
     }
