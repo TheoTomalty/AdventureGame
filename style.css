@@ -25,6 +25,11 @@ tt {
 	border:1px solid #000;
 }
 
+.corner_link {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
 #div_map {
 	padding-left: 15px;
 	padding-right: 5px;
@@ -38,7 +43,7 @@ tt {
 	padding-left: 15px;
 	padding-right: 15px;
 	margin-top: 5px;
-	margin-right: 50px;
+	margin-right: 5px;
 }
 
 #div_box {

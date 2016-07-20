@@ -1,13 +1,9 @@
 // Key Presses
 document.onkeydown = function(evt) {
 	evt = evt || window.event;
-	if (!game_started){
-		game_started = true;
-		SetupEnvironment();
-	}
 
 	//Move Character
-	if (!develop_mode && game_started && can_move){
+	if (!develop_manager.activated && game_started && can_move){
 		if (evt.keyCode == 87 && !move_direction.up){
 			StepCharacter("up");
 			move.up = setInterval(function(){StepCharacter("up")}, move_speed);
@@ -34,13 +30,13 @@ document.onkeydown = function(evt) {
 			GenerateBox();
 		}
 	}
-	else if (develop_mode && evt.keyCode == 81){
-		ExitDevelop();
-	}
 	if (evt.keyCode >= 49 && evt.keyCode <= 57){ // Activate Box Function
 		var i = evt.keyCode - 49;
-		if (box.list[i]){
+		if (game_started && box.list[i]){
 			box.list[i].funct();
+		}
+		else if (develop_manager.activated){
+			develop_manager.box_manager.current_box.ProcessNumber(i);
 		}
 	}
 }

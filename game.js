@@ -1,7 +1,7 @@
 // Setting up game global variables
 var game_started = false; // Should not change after made true
 var can_move = true;
-var develop_mode = false;
+var develop_manager = new DevelopManager();
 //localStorage.clear();
 
 var default_equipment = {weapon:{name:"Fists", use:"weapon", damage:10}, armour:{name:"Cloth", use:"armour", resistance:1}};
@@ -38,6 +38,14 @@ var move_direction = {up:false, left:false, right:false, down:false};
 var box = {title:"", list:[], body:"", current_interaction:null};
 var previous_symbol = "";
 
+
+function Play(){
+	if (!game_started){
+		game_started = true;
+		develop_manager.Deactivate();
+		SetupEnvironment();
+	}
+}
 
 //Basic Game Functions
 Storage.prototype.setObj = function(key, obj) {

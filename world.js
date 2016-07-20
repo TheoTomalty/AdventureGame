@@ -45,12 +45,17 @@ function World(name) {
     document.getElementById("map").innerHTML = this.mapHTML();
   }
 
+  this.NewEnvironment = function(){
+    document.getElementById("myNav").style.width = "100%";
+  }
+
   this.GetBox = function(){
     var new_box = new Box();
     var new_array = [];
     for (var i = 0; i < this.environments.length; ++i){
       new_array.push(environments[i].interaction);
     }
+    new_array.push(new Interaction("New Env", this.NewEnvironment));
     new_box.head = this.name;
     new_box.interactions = new_array;
     return new_box;
