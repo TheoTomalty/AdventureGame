@@ -4,58 +4,43 @@ function World(name) {
   this.size = 20;
   this.environments = [];
 
-  this.GetChar = function(x, y) {
-    for (var i = 0; i < this.environments.length; ++i){
-      for (var j = 0; j < this.environments[i].positions.length; ++j){
-        var position = this.environments[i].positions[j];
-        if (position.x == x && position.y == y){
-          return this.environments[i].ch;
-        }
-      }
-    }
-    return ".";
-  }
-
-  this.Map = function() {
-    var new_map = [];
-    for (var i = 0; i < this.size; ++i){
-      var row = [];
-      for (var j = 0; j < this.size; ++j){
-        row.push(this.GetChar(i, j));
-      }
-      new_map.push(row);
-    }
-    return new_map;
-  }
-
-  this.mapHTML = function(){
-    var new_map = this.Map();
-    var map_repr = "<tt>";
-    for (var i = 0; i < this.size; ++i){
-      for (var j = 0; j < this.size; ++j){
-        map_repr += new_map[i][j];
-      }
-      map_repr += "<br>";
-    }
-    map_repr += "</tt>";
-    return map_repr;
-  }
-
-  this.Display = function(){
-    document.getElementById("map").innerHTML = this.mapHTML();
-  }
+  this.GetEnvironment = function(position) {
+		for (var i = 0; i < this.environments.length; ++i){
+			for (var j = 0; j < this.environments[i].positions.length; ++j){
+				var env_pos = this.environments[i].positions[j];
+				if (position.x == env_pos.x && position.y == env_pos.y){
+					return this.environments[i];
+				}
+			}
+		}
+		return null;
+	}
 
   this.NewEnvironment = function(){
-    document.getElementById("myNav").style.width = "100%";
+    develop_manager.creation_manager.Create(new Environment(), this.obj);
+  }
+
+  this.Add = function(env){
+    this.environments.push(env);
+  }
+
+  this.GetMap = function() {
+    var new_map = new Map(this.size);
+    for (var i = 0; i < this.environments.length; ++i){
+      for (var j = 0; j < this.environments[i].positions.length; ++j){
+        new_map.SetChar(this.environments[i].positions[j], this.environments[i].ch);
+      }
+    }
+    return new_map;
   }
 
   this.GetBox = function(){
     var new_box = new Box();
     var new_array = [];
+    new_array.push(new Interaction("New Env", this, this.NewEnvironment));
     for (var i = 0; i < this.environments.length; ++i){
-      new_array.push(environments[i].interaction);
+      new_array.push(this.environments[i].GetInteraction());
     }
-    new_array.push(new Interaction("New Env", this.NewEnvironment));
     new_box.head = this.name;
     new_box.interactions = new_array;
     return new_box;

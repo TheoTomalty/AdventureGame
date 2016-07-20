@@ -1,6 +1,27 @@
 function Map(size) {
-	this.map = [];
 	this.size = size;
+	this.map = FixedArray([size, size], ".");
+
+	this.SetChar = function(position, char){
+		this.map[position.x, position.y] = char;
+	}
+
+	this.GetChar = function(position) {
+		return this.map[position.x][position.y];
+	}
+}
+
+FixedArray = function(dims, element){
+	var new_array = [];
+	var object_pushed = element
+	for (var i = 0; i < dims.length; ++i){
+		for (var j = 0; j < dims[i]; ++j){
+			new_array.push(object_pushed);
+		}
+		object_pushed = new_array;
+		new_array = [];
+	}
+	return object_pushed;
 }
 
 // Reloads Screen with updated variables

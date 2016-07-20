@@ -3,8 +3,7 @@ function Develop(){
   //develop_mode = true;
   //document.getElementById("myNav").style.width = "100%";
   var new_world = new World("Test");
-  new_world.Display();
-  develop_manager.box_manager.Display(new_world);
+  develop_manager.Display(new_world);
 }
 
 function ExitDevelop(){

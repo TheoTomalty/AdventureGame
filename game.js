@@ -38,12 +38,44 @@ var move_direction = {up:false, left:false, right:false, down:false};
 var box = {title:"", list:[], body:"", current_interaction:null};
 var previous_symbol = "";
 
-
 function Play(){
 	if (!game_started){
 		game_started = true;
 		develop_manager.Deactivate();
 		SetupEnvironment();
+	}
+}
+
+function Position(x, y){
+	this.x = x;
+	this.y = y;
+
+	this.GetAbsIndex = function(size){
+		return y*size + x;
+	}
+}
+
+function PropertyList(obj, keys){
+	this.keys = keys;
+	this.obj = obj;
+
+	this.Size = function(){
+		return this.keys.length;
+	}
+
+	this.GetProperty = function(i){
+		return new Property(obj, keys[i]);
+	}
+}
+
+function Property(obj, key){
+	this.key = key;
+	this.obj = obj;
+	this.value = function(){
+		return obj[key];
+	}
+	this.type = function(){
+		return typeof this.value;
 	}
 }
 
@@ -56,6 +88,10 @@ Storage.prototype.setObj = function(key, obj) {
 
 Storage.prototype.getObj = function(key) {
 	return JSON.parse(this.getItem(key))
+}
+
+String.prototype.capFirst = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 function partial(func /*, 0..n args */) {
