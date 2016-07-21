@@ -3,20 +3,36 @@ function Map(size) {
 	this.map = FixedArray([size, size], ".");
 
 	this.SetChar = function(position, char){
-		this.map[position.x, position.y] = char;
+		var index = this.GetIndex(position);
+		this.map[index[0]][index[1]] = char;
 	}
 
 	this.GetChar = function(position) {
-		return this.map[position.x][position.y];
+		var index = this.GetIndex(position);
+		return this.map[index[0]][index[1]];
+	}
+
+	this.GetPosition = function(i, j){
+		return new Position(j, i);
+	}
+
+	this.GetIndex = function(position){
+		return [position.y, position.x];
 	}
 }
 
 FixedArray = function(dims, element){
 	var new_array = [];
-	var object_pushed = element
+	var object_pushed = element;
 	for (var i = 0; i < dims.length; ++i){
 		for (var j = 0; j < dims[i]; ++j){
-			new_array.push(object_pushed);
+			if (object_pushed == element){
+				new_array.push(object_pushed);
+			}
+			else {
+				var new_object = object_pushed.slice();
+				new_array.push(new_object);
+			}
 		}
 		object_pushed = new_array;
 		new_array = [];

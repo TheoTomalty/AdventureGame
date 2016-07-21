@@ -3,6 +3,8 @@ function DevelopManager(){
   this.map_manager = new MapManager();
   this.box_manager = new BoxManager();
   this.creation_manager = new CreationManager();
+  this. object_manager = new ObjectManager();
+
 
   this.current_display = null;
 
@@ -32,8 +34,6 @@ function DevelopManager(){
 }
 
 function MapManager(){
-  //Take some of the methods from World(), like BoxManager does to Box()
-  //Generalizes world and environment into one manager, and any other future layers
   this.name = "";
   this.current_map = null;
 
@@ -41,11 +41,11 @@ function MapManager(){
     this.current_map = obj;
   }
 
-  this.mapHTML = function(){
+  this.mapHTML = function(element_list){
     var map_repr = "<tt>";
-    for (var i = 0; i < this.current_map.size; ++i){
-      for (var j = 0; j < this.current_map.size; ++j){
-        map_repr += this.current_map.map[i][j];
+    for (var i = 0; i < element_list.length; ++i){
+      for (var j = 0; j < element_list[i].length; ++j){
+        map_repr += element_list[i][j];
       }
       map_repr += "<br>";
     }
@@ -55,7 +55,26 @@ function MapManager(){
 
   this.Display = function(obj){
 		this.SetCurrentMap(obj.GetMap());
+    document.getElementById("map").innerHTML = this.mapHTML(this.current_map.map);
+  }
+
+  this.Refresh = function(){
     document.getElementById("map").innerHTML = this.mapHTML();
+  }
+
+  this.SetOnClick = function(funct_string){
+    var new_list = [];
+    for (var i = 0; i < this.current_map.size; ++i){
+      var new_row = [];
+      for (var j = 0; j < this.current_map.size; ++j){
+        var position = this.current_map.GetPosition(i, j);
+        var element = "<a href=\"#\" onclick=\"" + funct_string + position.GetString() + ";\">" + this.current_map.map[i][j] + "</a>";
+        new_row.push(element);
+      }
+      new_list.push(new_row);
+    }
+
+    document.getElementById("map").innerHTML = this.mapHTML(new_list);
   }
 }
 
@@ -92,15 +111,22 @@ function BoxManager(){
 		this.SetCurrentBox(obj.GetBox());
 		document.getElementById("box").innerHTML = this.boxHTML();
 	}
+
+  this.Refresh = function(){
+		document.getElementById("box").innerHTML = this.boxHTML();
+	}
+
+  this.DisplayBox = function(box_obj){
+    this.current_box = box_obj;
+    this.Refresh();
+  }
 }
 
 function CreationManager(){
   this.current_object = null;
-  this.current_parent = null;
 
-  this.SetCurrentObj = function(obj, parent){
+  this.SetCurrentObj = function(obj){
     this.current_object = obj;
-    this.current_parent = parent;
   }
 
   this.createHTML = function(){
@@ -116,8 +142,8 @@ function CreationManager(){
     return html;
   }
 
-  this.Create = function(obj, parent){
-    this.SetCurrentObj(obj, parent);
+  this.Create = function(obj){
+    this.SetCurrentObj(obj);
     document.getElementById("myNav").style.width = "100%";
     document.getElementById("create").innerHTML = this.createHTML();
   }
@@ -136,7 +162,15 @@ function CreationManager(){
       property.obj[property.key] = document.getElementById(property.key).value;
     }
 
-    this.current_parent.Add(this.current_object);
+    this.current_object.parent.Add(this.current_object);
     this.Exit();
+  }
+}
+
+function ObjectManager(){
+  this.current_object = null;
+
+  this.SetObject = function(obj){
+    this.current_object = obj;
   }
 }

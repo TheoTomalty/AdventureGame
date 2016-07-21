@@ -1,6 +1,6 @@
 //Box prototype
-function Box(){
-	this.head = "";
+function Box(head){
+	this.head = head;
 	this.body = "";
 	this.interactions = [];
 
