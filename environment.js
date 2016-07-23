@@ -1,4 +1,4 @@
-function Environment(world){
+var Environment = Inherits(Mapable, function(world){
   //Hidden
   this.class = "environment";
   this.skipped = false;
@@ -19,7 +19,7 @@ function Environment(world){
   }
 
   this.GetContainerList = function(){
-    return new ContainerList(this, ["stores", "NPCs", "chests"]);
+    return new ContainerList(this, ["stores", "NPCs", "chests"], ["Sore", "NPC", "Chest"]);
   }
 
   this.GetInteraction = function(){
@@ -60,4 +60,4 @@ function Environment(world){
   this.Display = function(){
     develop_manager.map_manager.Display(this);
   }
-}
+});

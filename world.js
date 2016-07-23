@@ -1,8 +1,12 @@
 //World prototype
-function World(name) {
+var World = Inherits(Mapable, function(name) {
   this.name = name;
   this.size = 20;
   this.environments = [];
+
+  this.GetContainerList = function(){
+    return new ContainerList(this, ["environments"], ["Environment"]);
+  }
 
   this.GetEnvironment = function(position) {
 		for (var i = 0; i < this.environments.length; ++i){
@@ -24,31 +28,10 @@ function World(name) {
     this.environments.push(env);
   }
 
-  this.GetMap = function() {
-    var new_map = new Map(this.size);
-    for (var i = 0; i < this.environments.length; ++i){
-      for (var j = 0; j < this.environments[i].positions.length; ++j){
-        new_map.SetChar(this.environments[i].positions[j], this.environments[i].symbol);
-      }
-    }
-    return new_map;
-  }
-
-  this.GetBox = function(){
-    var new_box = new Box(this.name);
-    var new_array = [];
-    new_array.push(new Interaction("New Env", this, "NewEnvironment"));
-    for (var i = 0; i < this.environments.length; ++i){
-      new_array.push(this.environments[i].GetInteraction());
-    }
-    new_box.interactions = new_array;
-    return new_box;
-  }
-
   this.Display = function(){
     develop_manager.map_manager.Display(this);
   }
-}
+});
 
 function GetWorld(){
   var player = localStorage.getObj("player");

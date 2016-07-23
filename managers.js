@@ -66,7 +66,7 @@ function MapManager(){
     if (obj !== null){
       develop_manager.object_manager.SetObject(obj);
     }
-    develop_manager.object_manager.current_object.parent.Display();
+    this.Display(develop_manager.object_manager.current_object.parent);
     develop_manager.map_manager.SetOnClick(funct_string);
   }
 
@@ -82,7 +82,6 @@ function MapManager(){
       }
       new_list.push(new_row);
     }
-
     document.getElementById("map").innerHTML = this.mapHTML(new_list);
   }
 }
