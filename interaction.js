@@ -39,38 +39,44 @@ function Property(obj, key){
 	}
 }
 
-function ContainerList(obj, keys, types){
+function ContainerList(obj, keys){
 	this.keys = keys;
 	this.obj = obj;
-  this.types = types;
 
 	this.Size = function(){
 		return this.keys.length;
 	}
 
 	this.GetContainer = function(i){
-		return new Container(this.obj, this.keys[i], this.types[i]);
+		return this.obj[this.keys[i]];
+	}
+
+  this.GetContainerByClass = function(class_name){
+    for (var i = 0; i < this.keys.length; ++i){
+      if (IsClass(this.GetContainer(i).GetConstructor(), class_name)){
+  		    return this.GetContainer(i);
+      }
+    }
 	}
 }
 
-function Container(obj, key, constructor){
-	this.key = key;
-	this.obj = obj;
-  this.constructor = constructor;
+function Container(Constructor){
+  this.Constructor = Constructor;
+  this.elements = [];
 
   this.Size = function(){
-    return this.obj[this.key].length;
+    return this.elements.length;
+  }
+
+  this.Add = function(obj){
+    this.elements.push(obj);
   }
 
   this.GetElement = function(i){
-    return this.obj[this.key][i];
-  }
-
-  this.GetObject = function(){
-    return this.obj;
+    return this.elements[i];
   }
 
   this.GetConstructor = function(){
-    return this.constructor;
+    return this.Constructor;
   }
 }

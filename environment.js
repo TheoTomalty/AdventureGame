@@ -1,6 +1,6 @@
 var Environment = Inherits(Mapable, function(world){
   //Hidden
-  this.class = "environment";
+  this.class = "Environment";
   this.skipped = false;
   this.parent = world;
   this.positions = [];
@@ -10,16 +10,16 @@ var Environment = Inherits(Mapable, function(world){
   this.symbol = "";
 
   //Containers
-  this.stores = [];
-  this.NPCs = [];
-  this.chests = [];
+  //this.Stores = new Container(Store);
+  //this.NPCs = new Container(NPC);
+  //this.Chests = new Container(Chest);
 
   this.GetPropertyList = function(){
     return new PropertyList(this, ["name", "symbol"]);
   }
 
   this.GetContainerList = function(){
-    return new ContainerList(this, ["stores", "NPCs", "chests"], ["Sore", "NPC", "Chest"]);
+    return new ContainerList(this, ["Stores", "NPCs", "Chests"]);
   }
 
   this.GetInteraction = function(){

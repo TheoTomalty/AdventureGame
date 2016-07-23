@@ -2,34 +2,10 @@
 var World = Inherits(Mapable, function(name) {
   this.name = name;
   this.size = 20;
-  this.environments = [];
+  this.Environments = new Container(Environment);
 
   this.GetContainerList = function(){
-    return new ContainerList(this, ["environments"], [Environment]);
-  }
-
-  this.GetEnvironment = function(position) {
-		for (var i = 0; i < this.environments.length; ++i){
-			for (var j = 0; j < this.environments[i].positions.length; ++j){
-				var env_pos = this.environments[i].positions[j];
-				if (position.x == env_pos.x && position.y == env_pos.y){
-					return this.environments[i];
-				}
-			}
-		}
-		return null;
-	}
-
-  this.NewEnvironment = function(){
-    develop_manager.creation_manager.Create(new Environment(this));
-  }
-
-  this.Add = function(env){
-    this.environments.push(env);
-  }
-
-  this.Display = function(){
-    develop_manager.map_manager.Display(this);
+    return new ContainerList(this, ["Environments"]);
   }
 });
 

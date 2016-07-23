@@ -46,6 +46,19 @@ function Play(){
 	}
 }
 
+function IsClass(Constructor, class_name){
+	var temp_obj = new Constructor();
+	if (temp_obj.class == class_name){
+		return true;
+	}
+	return false;
+}
+
+function GetClass(Constructor){
+	var temp_obj = new Constructor();
+	return temp_obj.class;
+}
+
 function Position(x, y){
 	this.x = x;
 	this.y = y;

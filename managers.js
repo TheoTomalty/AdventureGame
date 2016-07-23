@@ -138,7 +138,7 @@ function CreationManager(){
   }
 
   this.createHTML = function(){
-    var html = "New " + this.current_object.class.capFirst() + "<br><ul>";
+    var html = "New " + this.current_object.class + "<br><ul>";
     var property_list = this.current_object.GetPropertyList();
     for (var i = 0; i < property_list.Size(); ++i){
       var property = property_list.GetProperty(i);
