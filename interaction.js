@@ -1,10 +1,16 @@
-function Interaction(name, obj, exec, arg){
+function Interaction(name, obj, exec){
   this.name = name;
   this.obj = obj;
-  this.executable = exec
+  this.executable = exec;
+  this.arg = Array.prototype.slice.call(arguments)[3] || null;
 
   this.Process = function(){
-    this.obj[this.executable]();
+    if (this.arg === null){
+      this.obj[this.executable]();
+    }
+    else {
+      this.obj[this.executable](this.arg);
+    }
   }
 }
 
@@ -47,10 +53,10 @@ function ContainerList(obj, keys, types){
 	}
 }
 
-function Container(obj, key, type){
+function Container(obj, key, constructor){
 	this.key = key;
 	this.obj = obj;
-  this.type = type;
+  this.constructor = constructor;
 
   this.Size = function(){
     return this.obj[this.key].length;
@@ -64,7 +70,7 @@ function Container(obj, key, type){
     return this.obj;
   }
 
-  this.GetType = function(){
-    return this.type;
+  this.GetConstructor = function(){
+    return this.constructor;
   }
 }

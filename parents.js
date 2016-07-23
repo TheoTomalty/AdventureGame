@@ -10,7 +10,7 @@ var DecoratedContainer = function(){
     var container_list = this.GetContainerList();
     for (var i = 0; i < container_list.Size(); ++i){
       var container = container_list.GetContainer(i);
-      new_array.push(new Interaction("New " + container.GetType(), this, "New" + container.GetType()));
+      new_array.push(new Interaction("New Thing", this, "New", container.GetConstructor()));
       for (var j = 0; j < container.Size(); ++j){
         var element = container.GetElement(j);
         new_array.push(element.GetInteraction());
@@ -20,8 +20,8 @@ var DecoratedContainer = function(){
     return new_box;
   }
 
-  this.New = function(Class){
-    develop_manager.creation_manager.Create(new Class(this));
+  this.New = function(Constructor){
+    develop_manager.creation_manager.Create(new Constructor(this));
   }
 }
 

@@ -5,7 +5,7 @@ var World = Inherits(Mapable, function(name) {
   this.environments = [];
 
   this.GetContainerList = function(){
-    return new ContainerList(this, ["environments"], ["Environment"]);
+    return new ContainerList(this, ["environments"], [Environment]);
   }
 
   this.GetEnvironment = function(position) {
