@@ -62,13 +62,22 @@ function MapManager(){
     document.getElementById("map").innerHTML = this.mapHTML();
   }
 
+  this.OnClickSession = function(funct_string, obj){
+    if (obj !== null){
+      develop_manager.object_manager.SetObject(obj);
+    }
+    develop_manager.object_manager.current_object.parent.Display();
+    develop_manager.map_manager.SetOnClick(funct_string);
+  }
+
   this.SetOnClick = function(funct_string){
     var new_list = [];
     for (var i = 0; i < this.current_map.size; ++i){
       var new_row = [];
       for (var j = 0; j < this.current_map.size; ++j){
         var position = this.current_map.GetPosition(i, j);
-        var element = "<a href=\"#\" onclick=\"" + funct_string + position.GetString() + ";\">" + this.current_map.map[i][j] + "</a>";
+        var element = "<a href=\"#\" onclick=\"develop_manager.object_manager.current_object." + funct_string + position.GetString() + ";"
+                      + " develop_manager.map_manager.OnClickSession(\'" + funct_string + "\', null);" + "\">" + this.current_map.map[i][j] + "</a>";
         new_row.push(element);
       }
       new_list.push(new_row);

@@ -1,59 +1,60 @@
 function Environment(world){
+  //Hidden
   this.class = "environment";
-  this.parent = world;
-  this.name = "";
-  this.ch = "";
-  this.positions = [];
   this.skipped = false;
+  this.parent = world;
+  this.positions = [];
+
+  //Properties
+  this.name = "";
+  this.symbol = "";
+
+  //Containers
   this.stores = [];
   this.NPCs = [];
   this.chests = [];
-  this.gates = [];
 
   this.GetPropertyList = function(){
-    return new PropertyList(this, ["name", "ch"]);
+    return new PropertyList(this, ["name", "symbol"]);
+  }
+
+  this.GetContainerList = function(){
+    return new ContainerList(this, ["stores", "NPCs", "chests"]);
   }
 
   this.GetInteraction = function(){
-    return new Interaction(this.name, partial(this.FirstCLick, this));
+    return new Interaction(this.name, this, "View");
   }
 
   this.SetPosition = function(x, y){
     var position = new Position(x, y);
     this.positions.push(position);
-    this.DisplayPositionLinks();
   }
 
-  this.SetPositions = function(){
+  this.PositionSetter = function(){
     var new_box = new Box(this.name);
-    new_box.interactions = [new Interaction("Save", partial(this.Save, this)), new Interaction("Skip", partial(this.Skip, this))];
+    new_box.interactions = [new Interaction("Save", this, "Save"), new Interaction("Skip", this, "Skip")];
     develop_manager.box_manager.DisplayBox(new_box);
 
-    this.DisplayPositionLinks();
+    develop_manager.map_manager.OnClickSession("SetPosition", this);
   }
 
-  this.Skip = function(env){
-    env.skipped = true;
-    develop_manager.Display(env);
+  this.Skip = function(){
+    this.skipped = true;
+    develop_manager.Display(this);
   }
 
-  this.Save = function(env){
-    develop_manager.Display(env);
+  this.Save = function(){
+    develop_manager.Display(this);
   }
 
-  this.FirstCLick = function(env){
-    if (!env.skipped && env.positions !== 'undefined'){
-      env.SetPositions();
+  this.View = function(){
+    if (!this.skipped && this.positions !== 'undefined'){
+      this.PositionSetter();
     }
     else{
       develop_manager.Display(env);
     }
-  }
-
-  this.DisplayPositionLinks = function(){
-    this.parent.Display();
-    develop_manager.object_manager.SetObject(this);
-    develop_manager.map_manager.SetOnClick("develop_manager.object_manager.current_object.SetPosition");
   }
 
   this.Display = function(){

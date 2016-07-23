@@ -16,8 +16,8 @@ function World(name) {
 		return null;
 	}
 
-  this.NewEnvironment = function(world){
-    develop_manager.creation_manager.Create(new Environment(world));
+  this.NewEnvironment = function(){
+    develop_manager.creation_manager.Create(new Environment(this));
   }
 
   this.Add = function(env){
@@ -28,7 +28,7 @@ function World(name) {
     var new_map = new Map(this.size);
     for (var i = 0; i < this.environments.length; ++i){
       for (var j = 0; j < this.environments[i].positions.length; ++j){
-        new_map.SetChar(this.environments[i].positions[j], this.environments[i].ch);
+        new_map.SetChar(this.environments[i].positions[j], this.environments[i].symbol);
       }
     }
     return new_map;
@@ -37,7 +37,7 @@ function World(name) {
   this.GetBox = function(){
     var new_box = new Box(this.name);
     var new_array = [];
-    new_array.push(new Interaction("New Env", partial(this.NewEnvironment, this)));
+    new_array.push(new Interaction("New Env", this, "NewEnvironment"));
     for (var i = 0; i < this.environments.length; ++i){
       new_array.push(this.environments[i].GetInteraction());
     }
@@ -63,12 +63,12 @@ function GetEnvironment(position){
   }
 }
 
-function ReplaceWorld(position, ch){
-	world_map = world_map.replaceAt(GetWorldElement(position.x, position.y), ch);
+function ReplaceWorld(position, symbol){
+	world_map = world_map.replaceAt(GetWorldElement(position.x, position.y), symbol);
 }
 
-function TemplReplWorld(position, ch) {
-	var new_map = world_map.replaceAt(GetWorldElement(position.x, position.y), ch);
+function TemplReplWorld(position, symbol) {
+	var new_map = world_map.replaceAt(GetWorldElement(position.x, position.y), symbol);
 	return new_map;
 }
 

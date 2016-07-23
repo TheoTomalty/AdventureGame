@@ -6,7 +6,7 @@ function Box(head){
 
 	this.ProcessNumber = function(num){
 		if (num < this.interactions.length){
-			this.interactions[num].exectuable();
+			this.interactions[num].Process();
 		}
 	}
 }
