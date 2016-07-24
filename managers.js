@@ -2,15 +2,8 @@ function DevelopManager(){
   this.activated = false;
   this.map_manager = new MapManager();
   this.box_manager = new BoxManager();
-  this.creation_manager = new CreationManager();
-  this. object_manager = new ObjectManager();
+  this.object_manager = new ObjectManager();
 
-
-  this.current_display = null;
-
-  this.SetCurrentDisplay = function(obj){
-    this.current_display = obj;
-  }
 
   this.Activate = function(){
     game_started = false;
@@ -21,14 +14,17 @@ function DevelopManager(){
     this.activated = false;
   }
 
-  this.Refresh = function(){
-    this.map_manager.Display(this.current_display);
-    this.box_manager.Display(this.current_display);
+  this.DisplayMap = function(obj){
+    this.map_manager.Display(obj);
+  }
+
+  this.DisplayBox = function(obj){
+    this.box_manager.Display(obj);
   }
 
   this.Display = function(obj){
-    this.SetCurrentDisplay(obj);
-    this.Refresh();
+    this.DisplayBox(obj);
+    this.DisplayMap(obj);
   }
 
 }
@@ -64,7 +60,7 @@ function MapManager(){
 
   this.OnClickSession = function(funct_string, obj){
     if (obj !== null){
-      develop_manager.object_manager.SetObject(obj);
+      develop_manager.object_manager.SetCurrentObj(obj);
     }
     this.Display(develop_manager.object_manager.current_object.parent);
     develop_manager.map_manager.SetOnClick(funct_string);
@@ -130,7 +126,7 @@ function BoxManager(){
   }
 }
 
-function CreationManager(){
+function ObjectManager(){
   this.current_object = null;
 
   this.SetCurrentObj = function(obj){
@@ -146,7 +142,7 @@ function CreationManager(){
       html += "<input type=\"text\" name=\"" + property.name + "\" id=\"" + property.name + "\">";
       html += "</li>";
     }
-    html += "</ul><input type=\"submit\" value=\"Create\" onclick=\"develop_manager.creation_manager.Save()\">";
+    html += "</ul><input type=\"submit\" value=\"Create\" onclick=\"develop_manager.object_manager.Save()\">";
     return html;
   }
 
@@ -160,7 +156,7 @@ function CreationManager(){
     document.getElementById("create").innerHTML = "";
     document.getElementById("myNav").style.width = "0%";
 
-    develop_manager.Refresh();
+    develop_manager.Display(this.current_object.parent);
   }
 
   this.Save = function(){
@@ -172,13 +168,5 @@ function CreationManager(){
 
     this.current_object.parent.Add(this.current_object);
     this.Exit();
-  }
-}
-
-function ObjectManager(){
-  this.current_object = null;
-
-  this.SetObject = function(obj){
-    this.current_object = obj;
   }
 }

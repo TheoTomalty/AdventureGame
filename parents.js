@@ -40,7 +40,7 @@ var DecoratedContainer = function(){
   }
 
   this.DisplayBox = function(){
-    develop_manager.box_manager.Display(this);
+    develop_manager.DisplayBox(this);
   }
 
   this.GetProperty = function(key){
@@ -65,7 +65,7 @@ var DecoratedContainer = function(){
 
 
   this.New = function(Constructor){
-    develop_manager.creation_manager.Create(new Constructor(this));
+    develop_manager.object_manager.Create(new Constructor(this));
   }
 
   this.Add = function(obj){
@@ -94,7 +94,7 @@ var Mapable = Inherits(DecoratedContainer, function(){
   }
 
   this.Display = function(){
-    develop_manager.map_manager.Display(this);
+    develop_manager.Display(this);
   }
 });
 
