@@ -39,6 +39,10 @@ var DecoratedContainer = function(){
     return new_box;
   }
 
+  this.DisplayBox = function(){
+    develop_manager.box_manager.Display(this);
+  }
+
   this.GetProperty = function(key){
     return this.GetPropertyList().GetPropertyByName(key);
   }
@@ -94,6 +98,51 @@ var Mapable = Inherits(DecoratedContainer, function(){
   }
 });
 
-var MapEmbeded = function(){
-  return;
+var MapEmbedded = function(embed){
+  this.parent = embed;
+  this.skipped = false;
+  this.positions = [];
+
+  this.SetPosition = function(x, y){
+    var position = new Position(x, y);
+    this.positions.push(position);
+  }
+
+  this.GetPositions = function(){
+    return this.positions;
+  }
+
+  this.IsInitialized = function(){
+    return (!this.skipped && !this.positions.length);
+  }
+
+  this.PositionSetter = function(){
+    var new_box = new Box(this.GetName());
+    new_box.interactions = [new Interaction("Save", this, "Save"), new Interaction("Skip", this, "Skip")];
+    develop_manager.box_manager.DisplayBox(new_box);
+
+    develop_manager.map_manager.OnClickSession("SetPosition", this);
+  }
+
+  this.Skip = function(){
+    this.skipped = true;
+    this.View();
+  }
+
+  this.Save = function(){
+    this.View();
+  }
+
+  this.GetInteraction = function(){
+    return new Interaction(this.GetName(), this, "View");
+  }
+
+  this.View = function(){
+    if (this.IsInitialized()){
+      this.PositionSetter();
+    }
+    else{
+      this.Open();
+    }
+  }
 }

@@ -67,18 +67,6 @@ function GetClass(Constructor){
 	return temp_obj.class;
 }
 
-function Position(x, y){
-	this.x = x;
-	this.y = y;
-
-	this.GetAbsIndex = function(size){
-		return y*size + x;
-	}
-
-	this.GetString = function(){
-		return "(" + this.x + ", " + this.y + ")";
-	}
-}
 
 //Basic Game Functions
 Storage.prototype.setObj = function(key, obj) {

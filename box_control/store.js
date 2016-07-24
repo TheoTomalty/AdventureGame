@@ -1,3 +1,17 @@
+var Store = Inherits(DecoratedContainer, function(env){
+	//Hidden
+	this.class = "Store";
+  MapEmbedded.call(this, env);
+
+	//Properties
+	this.SetPropertyList(new PropertyList(["Name", "text"], ["Symbol", "char"]));
+  this.SetContainerList(new ContainerList());
+
+	this.Open = function(){
+		this.DisplayBox();
+	}
+});
+
 function ShowStore(){
 	if (box.current_interaction.type == "store"){
 		var player = localStorage.getObj("player");
@@ -14,7 +28,7 @@ function ShowStore(){
 
 function HasItem(item){
 	var player = localStorage.getObj("player");
-	
+
 	if (ContainsObject(item, player.items)){
 		return true;
 	}
