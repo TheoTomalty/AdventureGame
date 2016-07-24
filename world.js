@@ -1,11 +1,14 @@
 //World prototype
 var World = Inherits(Mapable, function(name) {
-  this.name = name;
-  this.size = 20;
-  this.Environments = new Container(Environment);
+  this.class = "World";
 
-  this.GetContainerList = function(){
-    return new ContainerList(this, ["Environments"]);
+  this.SetPropertyList(new PropertyList(["Name", "text"], ["Size", "int"]));
+  this.SetContainerList(new ContainerList(Environment));
+  this.SetPropertyValue("Name", name);
+  this.SetPropertyValue("Size", 20);
+
+  this.GetHiddenNames = function(){
+    return ["class"];
   }
 });
 

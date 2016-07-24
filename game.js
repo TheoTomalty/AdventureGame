@@ -46,6 +46,14 @@ function Play(){
 	}
 }
 
+function Develop(){
+  develop_manager.Activate();
+  //develop_mode = true;
+  //document.getElementById("myNav").style.width = "100%";
+  var new_world = new World("Test");
+  develop_manager.Display(new_world);
+}
+
 function IsClass(Constructor, class_name){
 	var temp_obj = new Constructor();
 	if (temp_obj.class == class_name){

@@ -142,8 +142,8 @@ function CreationManager(){
     var property_list = this.current_object.GetPropertyList();
     for (var i = 0; i < property_list.Size(); ++i){
       var property = property_list.GetProperty(i);
-      html += "<li>" + property.key;
-      html += "<input type=\"text\" name=\"" + property.key + "\" id=\"" + property.key + "\">";
+      html += "<li>" + property.name;
+      html += "<input type=\"text\" name=\"" + property.name + "\" id=\"" + property.name + "\">";
       html += "</li>";
     }
     html += "</ul><input type=\"submit\" value=\"Create\" onclick=\"develop_manager.creation_manager.Save()\">";
@@ -167,7 +167,7 @@ function CreationManager(){
     var property_list = this.current_object.GetPropertyList();
     for (var i = 0; i < property_list.Size(); ++i){
       var property = property_list.GetProperty(i);
-      property.obj[property.key] = document.getElementById(property.key).value;
+      property.SetValue(document.getElementById(property.name).value);
     }
 
     this.current_object.parent.Add(this.current_object);
