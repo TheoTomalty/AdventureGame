@@ -1,6 +1,7 @@
 //World prototype
-var World = Inherits(Mapable, function(name) {
+var World = Inherits(DecoratedContainer, function(name) {
   this.class = "World";
+  Mapable.apply(this)
 
   this.SetPropertyList(new PropertyList(["Name", "text"], ["Size", "int"]));
   this.SetContainerList(new ContainerList(Environment));

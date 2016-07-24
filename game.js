@@ -54,6 +54,11 @@ function Develop(){
   develop_manager.Display(new_world);
 }
 
+function Inherits(Parent, Child){
+  Child.prototype = new Parent();
+  return Child;
+}
+
 function IsClass(Constructor, class_name){
 	var temp_obj = new Constructor();
 	if (temp_obj.class == class_name){

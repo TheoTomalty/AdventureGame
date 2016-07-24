@@ -21,6 +21,81 @@ function Map(size) {
 	}
 }
 
+var MapEmbedded = function(embed){
+	//Add to prototype by calling MapEmbedded.call(this, parent); Do the same for mappable and add properties for each.
+  this.parent = embed;
+  this.skipped = false;
+  this.positions = [];
+
+  this.SetPosition = function(x, y){
+    var position = new Position(x, y);
+    this.positions.push(position);
+  }
+
+  this.GetPositions = function(){
+    return this.positions;
+  }
+
+  this.IsInitialized = function(){
+    return (!this.skipped && !this.positions.length);
+  }
+
+  this.PositionSetter = function(){
+    var new_box = new Box(this.GetName());
+    new_box.interactions = [new Interaction("Save", this, "Save"), new Interaction("Skip", this, "Skip")];
+    develop_manager.box_manager.DisplayBox(new_box);
+
+    develop_manager.map_manager.OnClickSession("SetPosition", this);
+  }
+
+  this.Skip = function(){
+    this.skipped = true;
+    this.View();
+  }
+
+  this.Save = function(){
+    this.View();
+  }
+
+  this.GetInteraction = function(){
+    return new Interaction(this.GetName(), this, "View");
+  }
+
+  this.View = function(){
+    if (this.IsInitialized()){
+      this.PositionSetter();
+    }
+    else{
+      this.Open();
+    }
+  }
+}
+
+var Mapable = function(){
+  this.GetSize = function(){
+    return this.GetPropertyValue("Size");
+  }
+
+  this.GetMap = function() {
+    var new_map = new Map(this.GetSize());
+    var container_list = this.GetContainerList();
+    for (var i = 0; i < container_list.Size(); ++i){
+      var container = container_list.GetContainer(i);
+      for (var j = 0; j < container.Size(); ++j){
+        var element = container.GetElement(j);
+        for (var k = 0; k < element.positions.length; ++k){
+          new_map.SetChar(element.positions[k], element.GetPropertyValue("Symbol"));
+        }
+      }
+    }
+    return new_map;
+  }
+
+  this.Display = function(){
+    develop_manager.Display(this);
+  }
+}
+
 FixedArray = function(dims, element){
 	var new_array = [];
 	var object_pushed = element;
