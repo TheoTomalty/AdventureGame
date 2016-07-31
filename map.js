@@ -23,25 +23,25 @@ function Map(size) {
 
 var MapEmbedded = function(embed){
 	this.AddProperty("Symbol", "char");
-	this.skipped = false;
-  this.positions = [];
+	this.skipped = new Property("skipped", "bool", false); this.AddKey("skipped");
+  this.positions = new Container("positions", Position); this.AddKey("positions");
 
   this.parent = embed;
 
 	this.NumPositions = function(){
-		return this.positions.length;
+		return this.positions.Size();
 	}
 
 	this.GetPosition = function(i){
-		return this.positions[i];
+		return this.positions.GetElement(i);
 	}
 
   this.AddPosition = function(x, y){
-    this.positions.push(new Position(x, y));
+    this.positions.Add(new Position(x, y));
   }
 
   this.IsInitialized = function(){
-    return (this.skipped || this.positions.length);
+    return (this.skipped.GetValue() || this.positions.Size());
   }
 
   this.PositionSetter = function(){
@@ -53,11 +53,13 @@ var MapEmbedded = function(embed){
   }
 
   this.Skip = function(){
-    this.skipped = true;
+    this.skipped.SetValue(true);
     this.View();
   }
 
   this.Save = function(){
+		//alert(JSON.stringify(develop_manager.world.GetDict()));
+		develop_manager.SaveWorld();
     this.View();
   }
 

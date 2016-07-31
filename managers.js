@@ -30,9 +30,21 @@ function DevelopManager(){
 
   this.InitializeWorld = function(world){
     this.world = world;
-    this.Display(world);
+    this.LoadWorld(this.world.GetName());
+    this.Display(this.world);
   }
 
+  this.SaveWorld = function(){
+    localStorage.setObj(this.world.GetName(), this.world.GetDict());
+  }
+
+  this.LoadWorld = function(world_name){
+    var dict = localStorage.getObj(world_name) || null;
+    if (dict !== null){
+      this.world = new World(world_name);
+      this.world.LoadDict(dict);
+    }
+  }
 }
 
 function MapManager(){

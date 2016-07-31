@@ -1,4 +1,5 @@
 function Position(x, y){
+  this.class = "Position";
 	this.x = x;
 	this.y = y;
 
@@ -8,6 +9,15 @@ function Position(x, y){
 
 	this.GetString = function(){
 		return "(" + this.x + ", " + this.y + ")";
+	}
+
+	this.GetDict = function(){
+		return {x:this.x, y:this.y};
+	}
+
+	this.LoadDict = function(dict){
+		this.x = dict.x;
+		this.y = dict.y;
 	}
 }
 

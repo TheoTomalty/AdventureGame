@@ -1,16 +1,12 @@
-var Store = Inherits(DecoratedContainer, function(env){
-	//Hidden
+var Store = function(env){
 	this.class = "Store";
+  DecoratedContainer.call(this);
   MapEmbedded.call(this, env);
-
-	//Properties
-	this.SetPropertyList(new PropertyList(["Name", "text"], ["Symbol", "char"]));
-  this.SetContainerList(new ContainerList());
 
 	this.Open = function(){
 		this.DisplayBox();
 	}
-});
+}
 
 function ShowStore(){
 	if (box.current_interaction.type == "store"){

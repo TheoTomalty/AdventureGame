@@ -72,6 +72,10 @@ function GetClass(Constructor){
 	return temp_obj.class;
 }
 
+function GetConstructor(class_name){
+	return window[class_name];
+}
+
 
 //Basic Game Functions
 Storage.prototype.setObj = function(key, obj) {
