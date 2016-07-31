@@ -24,15 +24,10 @@ function DevelopManager(){
     this.box_manager.Display(obj);
   }
 
-  this.Display = function(obj){
-    this.DisplayBox(obj);
-    this.DisplayMap(obj);
-  }
-
   this.InitializeWorld = function(world){
     this.world = world;
     this.LoadWorld(this.world.GetName());
-    this.Display(this.world);
+    this.world.Open();
   }
 
   this.SaveWorld = function(){

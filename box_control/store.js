@@ -6,6 +6,7 @@ var Store = function(env){
 	this.Open = function(){
     this.SetObject();
 		this.DisplayBox();
+		this.parent.DisplayMap();
 	}
 }
 
