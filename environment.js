@@ -10,7 +10,8 @@ var Environment = function(world){
   this.AddContainer("Store", Store);//Store, NPC, Chest
 
   this.Open = function(){
-    this.Display();
+    this.SetObject();
+    this.DisplayMap();
     this.DisplayBox();
   }
 }

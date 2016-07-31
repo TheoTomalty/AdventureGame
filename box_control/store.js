@@ -4,6 +4,7 @@ var Store = function(env){
   MapEmbedded.call(this, env);
 
 	this.Open = function(){
+    this.SetObject();
 		this.DisplayBox();
 	}
 }

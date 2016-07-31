@@ -7,6 +7,12 @@ var World = function(name) {
   this.AddContainer("Env", Environment);
   this.SetPropertyValue("Name", name);
   this.SetPropertyValue("Size", 20);
+
+  this.Open = function(){
+    this.SetObject();
+    this.DisplayMap();
+    this.DisplayBox();
+  }
 }
 
 function GetWorld(){

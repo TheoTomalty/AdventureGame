@@ -36,8 +36,11 @@ document.onkeydown = function(evt) {
 			box.list[i].funct();
 		}
 		else if (develop_manager.activated){
-			develop_manager.box_manager.current_box.ProcessNumber(i);
+			develop_manager.ProcessNumber(i);
 		}
+	}
+	else if (evt.keyCode == 81 && develop_manager.activated){ // Quit Box
+		develop_manager.Back();
 	}
 }
 

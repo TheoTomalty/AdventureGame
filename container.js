@@ -265,6 +265,10 @@ var DecoratedContainer = function(){
     develop_manager.DisplayBox(this);
   }
 
+	this.SetObject = function(){
+		develop_manager.object_manager.SetCurrentObj(this);
+	}
+
   this.GetProperty = function(key){
     return this.GetPropertyList().GetPropertyByName(key);
   }

@@ -101,8 +101,8 @@ var Mapable = function(){
     return new_map;
   }
 
-  this.Display = function(){
-    develop_manager.Display(this);
+  this.DisplayMap = function(){
+    develop_manager.DisplayMap(this);
   }
 }
 

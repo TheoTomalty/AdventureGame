@@ -1,6 +1,7 @@
 function DevelopManager(){
   this.activated = false;
   this.wold = null;
+  this.get_input = true;
   this.map_manager = new MapManager();
   this.box_manager = new BoxManager();
   this.object_manager = new ObjectManager();
@@ -43,6 +44,19 @@ function DevelopManager(){
     if (dict !== null){
       this.world = new World(world_name);
       this.world.LoadDict(dict);
+    }
+  }
+
+  this.ProcessNumber = function(i){
+    if (this.get_input){
+      this.box_manager.current_box.ProcessNumber(i);
+    }
+  }
+
+  this.Back = function(){
+    var obj = this.object_manager.current_object;
+    if (this.get_input && obj !== null && obj.hasOwnProperty("parent")){
+      obj.parent.Open();
     }
   }
 }
@@ -162,12 +176,15 @@ function ObjectManager(){
       html += "</li>";
       //}
     }
-    html += "</ul><input type=\"submit\" value=\"Create\" onclick=\"develop_manager.object_manager.Save()\">";
+    html += "</ul>"
+    html += "<input type=\"submit\" value=\"Create\" onclick=\"develop_manager.object_manager.Save()\">";
+    html += "<input type=\"submit\" value=\"Cancel\" onclick=\"develop_manager.object_manager.Exit()\">";
     return html;
   }
 
   this.Create = function(obj){
     this.SetCurrentObj(obj);
+    develop_manager.get_input = false;
     document.getElementById("myNav").style.width = "100%";
     document.getElementById("create").innerHTML = this.createHTML();
   }
@@ -176,7 +193,8 @@ function ObjectManager(){
     document.getElementById("create").innerHTML = "";
     document.getElementById("myNav").style.width = "0%";
 
-    develop_manager.Display(this.current_object.parent);
+    this.current_object.parent.Open();
+    develop_manager.get_input = true;
   }
 
   this.Save = function(){
@@ -189,6 +207,7 @@ function ObjectManager(){
     }
 
     this.current_object.parent.Add(this.current_object);
+    develop_manager.SaveWorld();
     this.Exit();
   }
 }
