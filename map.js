@@ -22,22 +22,26 @@ function Map(size) {
 }
 
 var MapEmbedded = function(embed){
-	//Add to prototype by calling MapEmbedded.call(this, parent); Do the same for mappable and add properties for each.
-  this.parent = embed;
-  this.skipped = false;
+	this.AddProperty("Symbol", "char");
+	this.skipped = false;
   this.positions = [];
 
-  this.SetPosition = function(x, y){
-    var position = new Position(x, y);
-    this.positions.push(position);
-  }
+  this.parent = embed;
 
-  this.GetPositions = function(){
-    return this.positions;
+	this.NumPositions = function(){
+		return this.positions.length;
+	}
+
+	this.GetPosition = function(i){
+		return this.positions[i];
+	}
+
+  this.AddPosition = function(x, y){
+    this.positions.push(new Position(x, y));
   }
 
   this.IsInitialized = function(){
-    return (!this.skipped && !this.positions.length);
+    return (this.skipped || this.positions.length);
   }
 
   this.PositionSetter = function(){
@@ -45,7 +49,7 @@ var MapEmbedded = function(embed){
     new_box.interactions = [new Interaction("Save", this, "Save"), new Interaction("Skip", this, "Skip")];
     develop_manager.box_manager.DisplayBox(new_box);
 
-    develop_manager.map_manager.OnClickSession("SetPosition", this);
+    develop_manager.map_manager.OnClickSession("AddPosition", this);
   }
 
   this.Skip = function(){
@@ -62,7 +66,7 @@ var MapEmbedded = function(embed){
   }
 
   this.View = function(){
-    if (this.IsInitialized()){
+    if (!this.IsInitialized()){
       this.PositionSetter();
     }
     else{
@@ -72,6 +76,8 @@ var MapEmbedded = function(embed){
 }
 
 var Mapable = function(){
+  this.AddProperty("Size", "int");
+
   this.GetSize = function(){
     return this.GetPropertyValue("Size");
   }
@@ -83,9 +89,11 @@ var Mapable = function(){
       var container = container_list.GetContainer(i);
       for (var j = 0; j < container.Size(); ++j){
         var element = container.GetElement(j);
-        for (var k = 0; k < element.positions.length; ++k){
-          new_map.SetChar(element.positions[k], element.GetPropertyValue("Symbol"));
-        }
+				if (element.hasOwnProperty("parent") && element.parent.GetName() == this.GetName()){
+        	for (var k = 0; k < element.NumPositions(); ++k){
+          	new_map.SetChar(element.GetPosition(k), element.GetPropertyValue("Symbol"));
+        	}
+				}
       }
     }
     return new_map;

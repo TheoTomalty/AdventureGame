@@ -1,5 +1,6 @@
 function DevelopManager(){
   this.activated = false;
+  this.wold = null;
   this.map_manager = new MapManager();
   this.box_manager = new BoxManager();
   this.object_manager = new ObjectManager();
@@ -25,6 +26,11 @@ function DevelopManager(){
   this.Display = function(obj){
     this.DisplayBox(obj);
     this.DisplayMap(obj);
+  }
+
+  this.InitializeWorld = function(world){
+    this.world = world;
+    this.Display(world);
   }
 
 }
@@ -138,9 +144,11 @@ function ObjectManager(){
     var property_list = this.current_object.GetPropertyList();
     for (var i = 0; i < property_list.Size(); ++i){
       var property = property_list.GetProperty(i);
+      //if (!property.IsHidden()){
       html += "<li>" + property.name;
       html += "<input type=\"text\" name=\"" + property.name + "\" id=\"" + property.name + "\">";
       html += "</li>";
+      //}
     }
     html += "</ul><input type=\"submit\" value=\"Create\" onclick=\"develop_manager.object_manager.Save()\">";
     return html;
@@ -163,7 +171,9 @@ function ObjectManager(){
     var property_list = this.current_object.GetPropertyList();
     for (var i = 0; i < property_list.Size(); ++i){
       var property = property_list.GetProperty(i);
+      //if (!property.IsHidden()){
       property.SetValue(document.getElementById(property.name).value);
+      //}
     }
 
     this.current_object.parent.Add(this.current_object);

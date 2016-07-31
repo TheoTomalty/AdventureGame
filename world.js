@@ -1,17 +1,13 @@
 //World prototype
-var World = Inherits(DecoratedContainer, function(name) {
+var World = function(name) {
   this.class = "World";
-  Mapable.apply(this)
+  DecoratedContainer.call(this);
+  Mapable.call(this);
 
-  this.SetPropertyList(new PropertyList(["Name", "text"], ["Size", "int"]));
-  this.SetContainerList(new ContainerList(Environment));
+  this.AddContainer("Env", Environment);
   this.SetPropertyValue("Name", name);
   this.SetPropertyValue("Size", 20);
-
-  this.GetHiddenNames = function(){
-    return ["class"];
-  }
-});
+}
 
 function GetWorld(){
   var player = localStorage.getObj("player");

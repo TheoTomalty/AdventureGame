@@ -51,7 +51,7 @@ function Develop(){
   //develop_mode = true;
   //document.getElementById("myNav").style.width = "100%";
   var new_world = new World("Test");
-  develop_manager.Display(new_world);
+  develop_manager.InitializeWorld(new_world);
 }
 
 function Inherits(Parent, Child){

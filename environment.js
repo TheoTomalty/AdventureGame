@@ -1,20 +1,16 @@
-var Environment = Inherits(DecoratedContainer, function(world){
-  //Hidden
+var Environment = function(world){
   this.class = "Environment";
+  DecoratedContainer.call(this);
+
+  //Map Functionality
   MapEmbedded.call(this, world);
   Mapable.call(this);
 
   //Properties
-  this.SetPropertyList(new PropertyList(["Name", "text"], ["Size", "int"], ["Symbol", "char"]));
-  this.SetContainerList(new ContainerList(Store));//Store, NPC, Chest
-
-
-  this.GetHiddenNames = function(){
-    return ["class", "skipped"];
-  }
+  this.AddContainer("Store", Store);//Store, NPC, Chest
 
   this.Open = function(){
     this.Display();
     this.DisplayBox();
   }
-});
+}
