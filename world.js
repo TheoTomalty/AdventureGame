@@ -10,8 +10,7 @@ var World = function(name) {
 
   this.Open = function(){
     this.SetObject();
-    this.DisplayMap();
-    this.DisplayBox();
+    this.DisplayBoth()
   }
 }
 

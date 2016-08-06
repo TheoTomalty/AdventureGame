@@ -1,3 +1,14 @@
+var NPC = function(env){
+	this.class = "NPC";
+  DecoratedContainer.call(this);
+  MapEmbedded.call(this, env);
+
+	this.Open = function(){
+    this.SetObject();
+		this.DisplayBox();
+	}
+}
+
 function ShowNPC(){
 	if (box.current_interaction.type == "npc"){
 		if (box.current_interaction.use == "enemy"){
@@ -13,7 +24,7 @@ function ShowNPC(){
 		else if (box.current_interaction.use == "enemy"){
 			NewListElement("Fight", EngageEnemy);
 		}
-		
+
 		PrintBox();
 	}
 }
@@ -27,6 +38,6 @@ function EngageQuestgiver(){
 	for (var i = 0; i < npc.quests.length; ++i){
 		NewListElement(npc.quests[i].name, partial(ViewQuest, npc.quests[i]), ContainsObject(npc.quests[i], player.quests), false); // Pass Argument
 	}
-		
+
 	PrintBox();
 }

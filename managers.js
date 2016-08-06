@@ -16,12 +16,37 @@ function DevelopManager(){
     this.activated = false;
   }
 
+  this.GetObject = function(){
+    return this.object_manager.GetObject();
+  }
+
+  this.Archive = function(){
+    this.map_manager.ArchiveMap();
+    this.box_manager.ArchiveBox();
+    this.object_manager.ArchiveObject();
+  }
+
   this.DisplayMap = function(obj){
+    this.Archive();
+    this.box_manager.Refresh();
     this.map_manager.Display(obj);
   }
 
   this.DisplayBox = function(obj){
+    this.Archive();
+    this.map_manager.Refresh();
     this.box_manager.Display(obj);
+  }
+
+  this.DisplayBoth = function(obj){
+    this.Archive();
+    this.box_manager.Display(obj);
+    this.map_manager.Display(obj);
+  }
+
+  this.Refresh = function(){
+    this.box_manager.Refresh();
+    this.map_manager.Refresh();
   }
 
   this.InitializeWorld = function(world){
@@ -44,24 +69,66 @@ function DevelopManager(){
 
   this.ProcessNumber = function(i){
     if (this.get_input){
-      this.box_manager.current_box.ProcessNumber(i);
+      this.box_manager.GetBox().ProcessNumber(i);
     }
   }
 
   this.Back = function(){
-    var obj = this.object_manager.current_object;
-    if (this.get_input && obj !== null && obj.hasOwnProperty("parent")){
-      obj.parent.Open();
+    if (this.get_input){
+      if (this.map_manager.ResetOveride() || this.box_manager.ResetOveride()){
+        this.box_manager.ResetOveride()
+        this.Refresh();
+      }
+      else {
+        this.map_manager.Back();
+        this.box_manager.Back();
+        this.object_manager.Back();
+      }
     }
   }
 }
 
 function MapManager(){
   this.name = "";
+  this.map_list = [];
   this.current_map = null;
+  this.map_overide = null;
+
+  this.GetMap = function(){
+    if (this.map_overide === null){
+      return this.current_map.GetMap();
+    }
+    return this.map_overide;
+  }
+
+  this.ResetOveride = function(){
+    if (this.map_overide === null){
+      return false;
+    }
+    this.map_overide = null;
+    return true;
+  }
 
   this.SetCurrentMap = function(obj){
+    this.ResetOveride();
     this.current_map = obj;
+  }
+
+  this.ArchiveMap = function(){
+    this.map_list.push(this.current_map);
+    //this.current_map = null;
+  }
+
+  this.Back = function(){
+    var index = this.map_list.length - 1;
+    if (!index){
+      return;
+    }
+    this.SetCurrentMap(this.map_list[index]);
+    this.map_list.splice(index, 1)
+    if (this.current_map !== null){
+      this.Refresh();
+    }
   }
 
   this.mapHTML = function(element_list){
@@ -77,12 +144,17 @@ function MapManager(){
   }
 
   this.Display = function(obj){
-		this.SetCurrentMap(obj.GetMap());
-    document.getElementById("map").innerHTML = this.mapHTML(this.current_map.map);
+		this.SetCurrentMap(obj);
+    document.getElementById("map").innerHTML = this.mapHTML(this.GetMap().map);
   }
 
   this.Refresh = function(){
-    document.getElementById("map").innerHTML = this.mapHTML();
+    document.getElementById("map").innerHTML = this.mapHTML(this.GetMap().map);
+  }
+
+  this.DisplayMap = function(map){
+    this.map_overide = map;
+    document.getElementById("map").innerHTML = this.mapHTML(map.map);
   }
 
   this.OnClickSession = function(funct_string, obj){
@@ -95,39 +167,76 @@ function MapManager(){
 
   this.SetOnClick = function(funct_string){
     var new_list = [];
-    for (var i = 0; i < this.current_map.size; ++i){
+    for (var i = 0; i < this.GetMap().size; ++i){
       var new_row = [];
-      for (var j = 0; j < this.current_map.size; ++j){
-        var position = this.current_map.GetPosition(i, j);
+      for (var j = 0; j < this.GetMap().size; ++j){
+        var position = this.GetMap().GetPosition(i, j);
         var element = "<a href=\"#\" onclick=\"develop_manager.object_manager.current_object." + funct_string + position.GetString() + ";"
-                      + " develop_manager.map_manager.OnClickSession(\'" + funct_string + "\', null);" + "\">" + this.current_map.map[i][j] + "</a>";
+                      + " develop_manager.map_manager.OnClickSession(\'" + funct_string + "\', null);" + "\">" + this.GetMap().map[i][j] + "</a>";
         new_row.push(element);
       }
       new_list.push(new_row);
     }
-    document.getElementById("map").innerHTML = this.mapHTML(new_list);
+    var new_map = new Map(this.GetMap().size);
+    new_map.map = new_list;
+    this.DisplayMap(new_map);
   }
 }
 
 function BoxManager(){
+  this.box_list = [];
   this.current_box = null;
+  this.box_overide = null;
+
+  this.GetBox = function(){
+    if (this.box_overide === null){
+      return this.current_box.GetBox();
+    }
+    return this.box_overide;
+  }
+
+  this.ResetOveride = function(){
+    if (this.box_overide === null){
+      return false;
+    }
+    this.box_overide = null;
+    return true;
+  }
 
   this.SetCurrentBox = function(obj){
+    this.ResetOveride();
     this.current_box = obj;
   }
 
-	this.boxHTML = function(){
-		var html = this.current_box.head + "<br>";
+  this.ArchiveBox = function(){
+    this.box_list.push(this.current_box);
+    //this.current_box = null;
+  }
+
+  this.Back = function(){
+    var index = this.box_list.length - 1;
+    if (!index){
+      return;
+    }
+    this.SetCurrentBox(this.box_list[index]);
+    this.box_list.splice(index, 1)
+    if (this.current_box !== null){
+      this.Refresh();
+    }
+  }
+
+	this.boxHTML = function(box_obj){
+		var html = box_obj.head + "<br>";
 		var exists_something = false;
-		if (this.current_box.body != ""){
+		if (box_obj.body != ""){
 			exists_something = true;
-			html += "<p>" + this.current_box.body + "</p>";
+			html += "<p>" + box_obj.body + "</p>";
 		}
-		if (this.current_box.interactions.length != 0){
+		if (this.GetBox().interactions.length != 0){
 			exists_something = true;
 			html += "<ol>";
-			for (var i = 0; i < this.current_box.interactions.length; ++i){
-				html += "<li>" + this.current_box.interactions[i].name + "</li>";
+			for (var i = 0; i < box_obj.interactions.length; ++i){
+				html += "<li>" + box_obj.interactions[i].name + "</li>";
 			}
 			html += "</ol>";
 		}
@@ -138,31 +247,50 @@ function BoxManager(){
 		return html;
 	}
 
+  this.DisplayBox = function(box_obj){
+    this.box_overide = box_obj;
+    document.getElementById("box").innerHTML = this.boxHTML(box_obj);
+  }
+
 	this.Display = function(obj){
-		this.SetCurrentBox(obj.GetBox());
-		document.getElementById("box").innerHTML = this.boxHTML();
+		this.SetCurrentBox(obj);
+		document.getElementById("box").innerHTML = this.boxHTML(this.GetBox());
 	}
 
   this.Refresh = function(){
-		document.getElementById("box").innerHTML = this.boxHTML();
+		document.getElementById("box").innerHTML = this.boxHTML(this.GetBox());
 	}
-
-  this.DisplayBox = function(box_obj){
-    this.current_box = box_obj;
-    this.Refresh();
-  }
 }
 
 function ObjectManager(){
+  this.object_list = [];
   this.current_object = null;
 
   this.SetCurrentObj = function(obj){
     this.current_object = obj;
   }
 
+  this.GetObject = function(){
+    return this.current_object;
+  }
+
+  this.ArchiveObject = function(){
+    this.object_list.push(this.current_object);
+    //this.current_box = null;
+  }
+
+  this.Back = function(){
+    var index = this.object_list.length - 1;
+    if (!index){
+      return;
+    }
+    this.SetCurrentObj(this.object_list[index]);
+    this.object_list.splice(index, 1)
+  }
+
   this.createHTML = function(){
-    var html = "New " + this.current_object.class + "<br><ul>";
-    var property_list = this.current_object.GetPropertyList();
+    var html = "New " + this.GetObject().class + "<br><ul>";
+    var property_list = this.GetObject().GetPropertyList();
     for (var i = 0; i < property_list.Size(); ++i){
       var property = property_list.GetProperty(i);
       //if (!property.IsHidden()){
@@ -188,20 +316,21 @@ function ObjectManager(){
     document.getElementById("create").innerHTML = "";
     document.getElementById("myNav").style.width = "0%";
 
-    this.current_object.parent.Open();
+    this.SetCurrentObj(this.GetObject().parent);
+    develop_manager.Refresh();
     develop_manager.get_input = true;
   }
 
   this.Save = function(){
-    var property_list = this.current_object.GetPropertyList();
+    var property_list = this.GetObject().GetPropertyList();
     for (var i = 0; i < property_list.Size(); ++i){
       var property = property_list.GetProperty(i);
       //if (!property.IsHidden()){
       property.SetValue(document.getElementById(property.name).value);
       //}
     }
-
-    this.current_object.parent.Add(this.current_object);
+    //alert(this.GetObject().class);
+    this.GetObject().parent.Add(this.GetObject());
     develop_manager.SaveWorld();
     this.Exit();
   }

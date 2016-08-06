@@ -47,8 +47,8 @@ var MapEmbedded = function(embed){
   this.PositionSetter = function(){
     var new_box = new Box(this.GetName());
     new_box.interactions = [new Interaction("Save", this, "Save"), new Interaction("Skip", this, "Skip")];
-    develop_manager.box_manager.DisplayBox(new_box);
 
+		develop_manager.box_manager.DisplayBox(new_box);
     develop_manager.map_manager.OnClickSession("AddPosition", this);
   }
 
@@ -103,6 +103,10 @@ var Mapable = function(){
 
   this.DisplayMap = function(){
     develop_manager.DisplayMap(this);
+  }
+
+	this.DisplayBoth = function(){
+    develop_manager.DisplayBoth(this);
   }
 }
 

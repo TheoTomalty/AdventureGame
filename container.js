@@ -154,6 +154,7 @@ function ContainerList(){
 
 function Container(name, Constructor){
 	this.name = name;
+	this.parent = null;
   this.Constructor = Constructor || null;
   this.elements = [];
 
@@ -191,6 +192,23 @@ function Container(name, Constructor){
     //alert("Attempting to Construct Hidden Object");
 		return this.Constructor;
   }
+
+	this.GetBox = function(){
+		var new_box = new Box(this.GetName());
+		var new_array = [];
+		new_array.push(new Interaction("New " + GetClass(this.GetConstructor()), this.parent, "New", this.GetConstructor()));
+		for (var j = 0; j < this.Size(); ++j){
+			var element = this.GetElement(j);
+			new_array.push(element.GetInteraction());
+		}
+		new_box.interactions = new_array;
+    return new_box;
+	}
+
+	this.View = function(parent){
+		this.parent = parent;
+		develop_manager.DisplayBox(this);
+	}
 
 	this.GetDict = function(){
 		var new_list = [];
@@ -249,13 +267,7 @@ var DecoratedContainer = function(){
     var container_list = this.GetContainerList();
     for (var i = 0; i < container_list.Size(); ++i){
       var container = container_list.GetContainer(i);
-			//if (!container.IsHidden()){
-      new_array.push(new Interaction("New " + GetClass(container.GetConstructor()), this, "New", container.GetConstructor()));
-      for (var j = 0; j < container.Size(); ++j){
-      	var element = container.GetElement(j);
-      	new_array.push(element.GetInteraction());
-      }
-			//}
+			new_array.push(new Interaction(container.GetName(), container, "View", this));
     }
     new_box.interactions = new_array;
     return new_box;
